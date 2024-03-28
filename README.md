@@ -1,6 +1,6 @@
 # ConsoleApp
-*Application
-*Cinema
-*MenuElem
-*Menu Scene
-*Scene
+-  Application
+-  Cinema
+-  MenuElem
+-  Menu Scene
+-  Scene
