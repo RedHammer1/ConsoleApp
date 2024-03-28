@@ -10,16 +10,6 @@ void Cinema::SetId(unsigned int id)
     this->id = id;
 }
 
-unsigned int Cinema::GetPrice()
-{
-    return price;
-}
-
-void Cinema::SetPrice(unsigned int price)
-{
-    this->price = price;
-}
-
 std::string Cinema::GetTitle()
 {
     return title;
@@ -35,7 +25,7 @@ std::string Cinema::GetDirector()
     return director;
 }
 
-void Cinema::SetDirector(std::string price)
+void Cinema::SetDirector(std::string director)
 {
     this->director = director;
 }

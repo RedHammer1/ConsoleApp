@@ -1,5 +1,7 @@
 #include "../include/Application.hpp"
 
+using namespace std;
+
 enum Colors
 {
     BLACK = 0,
@@ -29,6 +31,8 @@ Application::Application()
     SetConsoleTextAttribute(console, Colors::WHITE * 16 + Colors::GREEN);
     SetConsoleOutputCP(65001);
 
+    parser = new CSV_Parser("assets/cinema.csv");
+
     menuScene = new MenuScene("MainScene");
     adminScene = new MenuScene("AdminScene");
     authorizeScene = new MenuScene("AuthorizeScene");
@@ -38,30 +42,66 @@ Application::Application()
     SceneManager::LoadScene("AuthorizeScene", adminScene);
 }
 
+void Application::ShowCinemaList()
+{
+    parser->ReadFromFile();
+    getchar();
+}
+void Application::AddCinema()
+{
+    parser->AddCinema();
+    getchar();
+}
+
+void Application::SortById(bool reverse)
+{
+    parser->SortById(reverse);
+    getchar();
+}
+void Application::SortByTitle(bool reverse)
+{
+    parser->SortByTitle(reverse);
+    getchar();
+}
+
+void Application::DeleteCinema()
+{
+    parser->DeleteCinema();
+    getchar();
+}
+
 void Application::AddAllScenesElements()
 {
     menuScene->AddScene(
         new MenuElem("Администрационное меню", []()
                      { SceneManager::ChangeScene("AdminScene"); }));
     menuScene->AddScene(
-        new MenuElem("Выход из программы", []()
-                     { std::cout << "Выходим из программы.... " << std::endl;
-                         exit(EXIT_SUCCESS); }));
+        new MenuElem("Показать список фильмов", [this]()
+                     { this->ShowCinemaList(); }));
     menuScene->AddScene(
-        new MenuElem("Показать список фильмов", []()
-                     { std::cout << "Показываем список фильмов.... " << std::endl;
-                        getchar(); }));
+        new MenuElem("Сортировать фильмы по id", [this]()
+                     { this->SortById(false); }));
+    menuScene->AddScene(
+        new MenuElem("Сортировать фильмы по названию фильма", [this]()
+                     { this->SortByTitle(false); }));
+    menuScene->AddScene(
+        new MenuElem("Сортировать фильмы по id инвертированно", [this]()
+                     { this->SortById(true); }));
+    menuScene->AddScene(
+        new MenuElem("Сортировать фильмы по названию фильма инвертированно", [this]()
+                     { this->SortByTitle(true); }));
+    menuScene->AddScene(
+        new MenuElem("Выход из программы", []()
+                     { std::cout << "Please stand by.... " << std::endl;
+                         exit(EXIT_SUCCESS); }));
 
     adminScene->AddScene(
-        new MenuElem("Добавить фильм в прокат", []()
-                     { std::cout << "Добавляется фильмец..." << std::endl; 
-                     getchar(); })
-
-    );
+        new MenuElem("Добавить фильм в прокат", [this]()
+                     { this->AddCinema(); }));
     adminScene->AddScene(
-        new MenuElem("Удалить фильм из проката", []()
-                     { std::cout << "Удаляется фильмец..." << std::endl; 
-                     getchar(); }));
+        new MenuElem("Удалить фильм из проката", [this]()
+                     { this->DeleteCinema(); }));
+
     adminScene->AddScene(
         new MenuElem("Выход из программы", []()
                      { std::cout << "Please stand by.... " << std::endl;
@@ -73,4 +113,6 @@ void Application::Update()
     SceneManager::ChangeScene("MainScene");
 
     SetConsoleTextAttribute(console, 0);
+
+    parser->SaveToFile();
 }
