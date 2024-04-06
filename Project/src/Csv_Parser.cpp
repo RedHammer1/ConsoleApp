@@ -17,7 +17,7 @@ CSV_Parser::CSV_Parser(std::string filename)
     {
         throw runtime_error("Файл с данными не найден");
     }
-
+    
     string line;
     while (getline(file, line))
     {

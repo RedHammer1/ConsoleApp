@@ -16,6 +16,8 @@ void PrintNameOfProgram()
                << '\n';
 }
 
+
+
 void MenuScene::Destroy()
 {
 }
@@ -23,7 +25,9 @@ void MenuScene::Update()
 {
      while ((true))
      {
+          system("cls");
           PrintNameOfProgram();
+          
 
           std::cout << "Варианты: " << std::endl;
           for (int i = 0; i < scenes.size(); i++)
@@ -39,8 +43,6 @@ void MenuScene::Update()
           std::cin.ignore(100, '\n');
           if (variant == "q")
           {
-               system("cls");
-               std::cout << "Выход из программы\n";
                break;
           }
           int choice = 0;

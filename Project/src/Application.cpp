@@ -25,11 +25,30 @@ enum Colors
 Application::Application()
 {
 
+
     console = GetStdHandle(
         STD_OUTPUT_HANDLE);
 
-    SetConsoleTextAttribute(console, Colors::WHITE * 16 + Colors::GREEN);
-    SetConsoleOutputCP(65001);
+    CONSOLE_SCREEN_BUFFER_INFO info;
+
+    GetConsoleScreenBufferInfo(console, &info);
+
+    CONSOLE_SCREEN_BUFFER_INFOEX cbi;
+    cbi.cbSize = sizeof(CONSOLE_SCREEN_BUFFER_INFOEX);
+    GetConsoleScreenBufferInfoEx(console, &cbi);
+    cbi.wAttributes = Colors::WHITE * 16 + Colors::GREEN;
+    SetConsoleScreenBufferInfoEx(console, &cbi);
+
+    COORD new_size =
+        {
+            short(info.srWindow.Right - info.srWindow.Left + 1),
+            short(info.srWindow.Bottom - info.srWindow.Top + 1)};
+    SetConsoleScreenBufferSize(console, new_size);
+
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+ setlocale(LC_ALL, "");
+
 
     parser = new CSV_Parser("assets/cinema.csv");
 
@@ -70,8 +89,10 @@ void Application::DeleteCinema()
     getchar();
 }
 
+
 void Application::AddAllScenesElements()
 {
+    
     menuScene->AddScene(
         new MenuElem("Администрационное меню", []()
                      { SceneManager::ChangeScene("AdminScene"); }));
@@ -92,7 +113,7 @@ void Application::AddAllScenesElements()
                      { this->SortByTitle(true); }));
     menuScene->AddScene(
         new MenuElem("Выход из программы", []()
-                     { std::cout << "Please stand by.... " << std::endl;
+                     { std::wcout << L"Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
 
     adminScene->AddScene(
