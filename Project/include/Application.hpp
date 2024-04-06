@@ -25,4 +25,12 @@ private:
 
     void SortById(bool reverse);
     void SortByTitle(bool reverse);
+
+    void CheckPassword();
+
+    std::string password = "admin";
+    std::string login = "admin";
+
+    bool isProtected;
+    bool isAccessGranted = false;
 };

@@ -25,7 +25,6 @@ enum Colors
 Application::Application()
 {
 
-
     console = GetStdHandle(
         STD_OUTPUT_HANDLE);
 
@@ -47,8 +46,6 @@ Application::Application()
 
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
-
-
 
     parser = new CSV_Parser("assets/cinema.csv");
 
@@ -89,13 +86,28 @@ void Application::DeleteCinema()
     getchar();
 }
 
+void Application::CheckPassword()
+{
+    system("cls");
+    std::string pass;
+    std::cout << "Введите пароль для того, чтобы получить доступ администратора: ";
+    cin >> pass;
+    if (pass != password)
+    {
+        cout << "В доступе отказано! Введите пароль ещё раз или выйдите" << endl;
+        getchar();
+    }
+    isAccessGranted = (pass == password);
+}
 
 void Application::AddAllScenesElements()
 {
-    
+
     menuScene->AddScene(
-        new MenuElem("Администрационное меню", []()
-                     { SceneManager::ChangeScene("AdminScene"); }));
+        new MenuElem("Администрационное меню", [this]()
+                     { 
+                        if(isAccessGranted)
+                        SceneManager::ChangeScene("AdminScene"); }));
     menuScene->AddScene(
         new MenuElem("Показать список фильмов", [this]()
                      { this->ShowCinemaList(); }));
@@ -111,6 +123,9 @@ void Application::AddAllScenesElements()
     menuScene->AddScene(
         new MenuElem("Сортировать фильмы по названию фильма инвертированно", [this]()
                      { this->SortByTitle(true); }));
+    menuScene->AddScene(
+        new MenuElem("Получить права доступа", [this]()
+                     { this->CheckPassword(); }));
     menuScene->AddScene(
         new MenuElem("Выход из программы", []()
                      { std::cout << "Please stand by.... " << std::endl;
