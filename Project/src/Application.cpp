@@ -47,7 +47,7 @@ Application::Application()
 
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
- setlocale(LC_ALL, "");
+
 
 
     parser = new CSV_Parser("assets/cinema.csv");
@@ -113,7 +113,7 @@ void Application::AddAllScenesElements()
                      { this->SortByTitle(true); }));
     menuScene->AddScene(
         new MenuElem("Выход из программы", []()
-                     { std::wcout << L"Please stand by.... " << std::endl;
+                     { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
 
     adminScene->AddScene(
