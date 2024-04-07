@@ -18,8 +18,6 @@ void SceneManager::Clear()
 
 void SceneManager::Loop()
 {
-    
 }
-
 
 std::map<std::string, Scene *> SceneManager::Scenes;

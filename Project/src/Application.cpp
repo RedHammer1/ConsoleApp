@@ -22,7 +22,19 @@ enum Colors
     WHITE = 15
 };
 
-
+void PrintNameOfProgram()
+{
+    std::cout << R"(
+ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
+º db   dD db    db db   db  .d88b.  d888888b d88888b  .d8b.  d888888b d8888b.	º 
+º 88 ,8P' 88    88 88   88 .8P  Y8. `~~88~~' 88'     d8' `8b `~~88~~' 88  `8D	º 
+º 88,8P   88    88 88ooo88 88    88    88    88ooooo 88ooo88    88    88oodD'	º 
+º 88`8b   88    88 88~~~88 88    88    88    88~~~~~ 88~~~88    88    88~~~	º 
+º 88 `88. 88b  d88 88   88 `8b  d8'    88    88.     88   88    88    88	º 
+º YP   YD ~Y8888P' YP   YP  `Y88P'     YP    Y88888P YP   YP    YP    88	º 
+ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼)"
+              << '\n';
+}
 
 Application::Application()
 {
@@ -37,7 +49,7 @@ Application::Application()
     CONSOLE_SCREEN_BUFFER_INFOEX cbi;
     cbi.cbSize = sizeof(CONSOLE_SCREEN_BUFFER_INFOEX);
     GetConsoleScreenBufferInfoEx(console, &cbi);
-    cbi.wAttributes = Colors::BLACK * 16 + Colors::GREEN;
+    cbi.wAttributes = Colors::CYAN * 16 + Colors::LIGHTGREEN;
     SetConsoleScreenBufferInfoEx(console, &cbi);
 
     COORD new_size =
@@ -46,24 +58,26 @@ Application::Application()
             short(info.srWindow.Bottom - info.srWindow.Top + 1)};
     SetConsoleScreenBufferSize(console, new_size);
 
-    SetConsoleCP(866);                
+    SetConsoleCP(866);
     SetConsoleOutputCP(866);
 
     parser = new CSV_Parser("assets/cinema.csv");
 
-    menuScene = new MenuScene("MainScene");
-    adminScene = new MenuScene("AdminScene");
-    authorizeScene = new MenuScene("AuthorizeScene");
+    menuScene = new MenuScene("MainScene", []()
+                              { PrintNameOfProgram(); });
+    adminScene = new MenuScene("AdminScene", []()
+                               { PrintNameOfProgram(); });
+    sortScene = new MenuScene("SortScene", [this]()
+                              { this->ShowCinemaList(); });
 
     SceneManager::LoadScene("MainScene", menuScene);
     SceneManager::LoadScene("AdminScene", adminScene);
-    SceneManager::LoadScene("AuthorizeScene", adminScene);
+    SceneManager::LoadScene("SortScene", sortScene);
 }
 
 void Application::ShowCinemaList()
 {
     parser->ReadFromFile();
-    getchar();
 }
 void Application::AddCinema()
 {
@@ -101,32 +115,34 @@ void Application::CheckPassword()
     }
     isAccessGranted = (pass == password);
 }
-
 void Application::AddAllScenesElements()
 {
-
     menuScene->AddScene(
         new MenuElem("€¤¬¨­¨áâà æ¨®­­®¥ ¬¥­î", [this]()
                      { 
-                        if(isAccessGranted != true) this->CheckPassword();
-                        SceneManager::ChangeScene("AdminScene"); }));
+                        if(!isAccessGranted) this->CheckPassword();
+                        if(isAccessGranted) SceneManager::ChangeScene("AdminScene"); }));
     menuScene->AddScene(
         new MenuElem("®ª § âì á¯¨á®ª ä¨«ì¬®¢", [this]()
-                     { this->ShowCinemaList(); }));
+                     { SceneManager::ChangeScene("SortScene"); }));
     menuScene->AddScene(
-        new MenuElem("‘®àâ¨à®¢ âì ä¨«ì¬ë ¯® id", [this]()
-                     { this->SortById(false); }));
-    menuScene->AddScene(
-        new MenuElem("‘®àâ¨à®¢ âì ä¨«ì¬ë ¯® ­ §¢ ­¨î ä¨«ì¬ ", [this]()
-                     { this->SortByTitle(false); }));
-    menuScene->AddScene(
-        new MenuElem("‘®àâ¨à®¢ âì ä¨«ì¬ë ¯® id ¨­¢¥àâ¨à®¢ ­­®", [this]()
-                     { this->SortById(true); }));
-    menuScene->AddScene(
-        new MenuElem("‘®àâ¨à®¢ âì ä¨«ì¬ë ¯® ­ §¢ ­¨î ä¨«ì¬  ¨­¢¥àâ¨à®¢ ­­®", [this]()
-                     { this->SortByTitle(true); }));
+        new MenuElem("‚ëå®¤ ¨§ ¯à®£à ¬¬ë", []()
+                     { std::cout << "Please stand by.... " << std::endl;
+                         exit(EXIT_SUCCESS); }));
 
-    menuScene->AddScene(
+    sortScene->AddScene(
+        new MenuElem("® id", [this]()
+                     { this->SortById(false); }));
+    sortScene->AddScene(
+        new MenuElem("® ­ §¢ ­¨î ä¨«ì¬ ", [this]()
+                     { this->SortByTitle(false); }));
+    sortScene->AddScene(
+        new MenuElem("® id ¨­¢¥àâ¨à®¢ ­­®", [this]()
+                     { this->SortById(true); }));
+    sortScene->AddScene(
+        new MenuElem("® ­ §¢ ­¨î ä¨«ì¬  ¨­¢¥àâ¨à®¢ ­­®", [this]()
+                     { this->SortByTitle(true); }));
+    sortScene->AddScene(
         new MenuElem("‚ëå®¤ ¨§ ¯à®£à ¬¬ë", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));

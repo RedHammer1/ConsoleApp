@@ -13,7 +13,7 @@ public:
 private:
     MenuScene *menuScene;
     MenuScene *adminScene;
-    MenuScene *authorizeScene;
+    MenuScene *sortScene;
     HANDLE console;
     CSV_Parser *parser;
 
@@ -29,7 +29,6 @@ private:
     void CheckPassword();
 
     std::string password = "admin";
-    std::string login = "admin";
 
     bool isProtected;
     bool isAccessGranted = false;
