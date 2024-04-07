@@ -13,11 +13,7 @@ CSV_Parser::CSV_Parser(std::string filename)
     this->filename = filename;
 
     ifstream file(filename);
-    if (!file)
-    {
-        throw runtime_error("–§–∞–π–ª —Å –¥–∞–Ω–Ω—ã–º–∏ –Ω–µ –Ω–∞–π–¥–µ–Ω");
-    }
-    
+
     string line;
     while (getline(file, line))
     {
@@ -34,44 +30,73 @@ CSV_Parser::CSV_Parser(std::string filename)
     file.close();
 }
 
+std::wstring convertToWstring(const std::string& str)
+{
+	wchar_t* pWChr = new wchar_t[str.size()];
+	size_t outSize;
+	mbstowcs_s(&outSize, pWChr, str.size(), str.c_str(), str.size());
+
+	std::wstring wStr(pWChr);
+  delete[] pWChr;
+	return wStr;
+}
+
 void CSV_Parser::SaveToFile()
 {
     try
     {
         ofstream file(filename);
-        if (!file)
-        {
-            throw runtime_error("–û—à–∏–±–∫–∞ —Å–æ–∑–¥–∞–Ω–∏—è —Ñ–∞–π–ª–∞");
-        }
-        else
-        {
+
             for (int i = 0; i < cinemaList.size(); i++)
             {
                 Cinema *cinema = cinemaList[i];
                 file << cinema->GetId() << ";"
                      << cinema->GetTitle() << ";"
                      << cinema->GetDirector() << std::endl;
+
+                     cout << cinema->GetId() << ";"
+                     << cinema->GetTitle() << ";"
+                     << cinema->GetDirector() << std::endl;
             }
-        }
+        
 
         file.close();
     }
     catch (exception &ex)
     {
         cerr << ex.what() << endl;
-    }
-    cinemaList.clear();
+        getchar();
+    } 
 }
 
 void CSV_Parser::ReadFromFile()
 {
+    cinemaList.clear();
+    ifstream file(this->filename);
+    if (!file)
+    {
+        throw runtime_error("éË®°™† ¢ Á‚•≠®® ‰†©´†");
+    }
+    
+    string line;
+    while (getline(file, line))
+    {
+        stringstream ss(line);
+        string title, director, id;
+        getline(ss, id, ';');
+        getline(ss, title, ';');
+        getline(ss, director);
+        int _id = stoi(id);
+
+        cinemaList.push_back( new Cinema(_id, title, director) );
+    }
+    file.close();
+
     for (int i = 0; i < cinemaList.size(); i++)
     {
         Cinema *cinema = cinemaList[i];
-        std::cout << "ID: " << cinema->GetId() << "; "
-                                                  "–ù–∞–∑–≤–∞–Ω–∏–µ –§–∏–ª—å–º–∞: "
-                  << cinema->GetTitle() << "; "
-                                           "–†–µ–∂–∏—Å—Å–µ—Ä: "
+        std::cout << "ID: " << cinema->GetId() << "; " << "ç†ß¢†≠®• ‰®´Ï¨†: "
+                  << cinema->GetTitle() << "; " << "îàé ‡•¶®·•‡†: "
                   << cinema->GetDirector() << std::endl;
     }
 }
@@ -79,21 +104,42 @@ void CSV_Parser::ReadFromFile()
 void CSV_Parser::AddCinema()
 {
     lastID = cinemaList.size() + 1;
+    cout << "Ñ´Ô §Æ°†¢´•≠®Ô ‰®´Ï¨† ¢ Ø‡Æ™†‚, ØÆ¶†©´„©·‚†, ¢¢•§®‚• ≠†ß¢†≠®• ‰®´Ï¨† ® îàé ‡•¶®·•‡†: " << endl;
 
     string title, director;
-    cout << "–í–≤–µ–¥–∏—Ç–µ –Ω–∞–∑–≤–∞–Ω–∏–µ —Ñ–∏–ª—å–º–∞: ";
-    getline(cin, title);
-    cout << "–í–≤–µ–¥–∏—Ç–µ –Ω–∞–∑–≤–∞–Ω–∏–µ –∞–≤—Ç–æ—Ä–∞ —Ñ–∏–ª—å–º–∞ –≤ —Ñ–æ—Ä–º–∞—Ç–µ –ù–∏–∫–æ–ª–∞—Å –í–∏–Ω–¥–∏–Ω–≥ –†–µ—Ñ–Ω: ";
-    getline(cin, director);
+    cout << "Ç¢•§®‚• ≠†ß¢†≠®• ‰®´Ï¨†: ";
+    try
+    {
+        std::cin >> title;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    
+    cout << "Ç¢•§®‚• îàé ‡•¶®·•‡†: ";
+    try
+    {
+        std::cin >> director;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+
+    cout << "çÆ¨•‡ ‰®´Ï¨† #"<< lastID << " "<< title << " " << "ê•¶®·•‡:" << director  << endl;
+    getchar();
+
     Cinema *cinemaItem = new Cinema(lastID, title, director);
     cinemaList.push_back(cinemaItem);
+    SaveToFile();
 }
 void CSV_Parser::DeleteCinema()
 {
     this->ReadFromFile();
 
     int id;
-    cout << "–í–≤–µ–¥–∏—Ç–µ –ø–æ—Ä—è–¥–∫–æ–≤—ã–π –Ω–æ–º–µ—Ä –¥–ª—è —É–¥–∞–ª–µ–Ω–∏—è —Ñ–∏–ª—å–º–∞: ";
+    cout << "Ç¢•§®‚Ï ≠Æ¨•‡ ‰®´Ï¨† §´Ô ØÆ·´•§„ÓÈ•£Æ „§†´•≠®Ô: ";
     cin >> id;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 

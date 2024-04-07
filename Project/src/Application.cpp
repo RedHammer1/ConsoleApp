@@ -22,6 +22,8 @@ enum Colors
     WHITE = 15
 };
 
+
+
 Application::Application()
 {
 
@@ -35,7 +37,7 @@ Application::Application()
     CONSOLE_SCREEN_BUFFER_INFOEX cbi;
     cbi.cbSize = sizeof(CONSOLE_SCREEN_BUFFER_INFOEX);
     GetConsoleScreenBufferInfoEx(console, &cbi);
-    cbi.wAttributes = Colors::WHITE * 16 + Colors::GREEN;
+    cbi.wAttributes = Colors::BLACK * 16 + Colors::GREEN;
     SetConsoleScreenBufferInfoEx(console, &cbi);
 
     COORD new_size =
@@ -44,8 +46,8 @@ Application::Application()
             short(info.srWindow.Bottom - info.srWindow.Top + 1)};
     SetConsoleScreenBufferSize(console, new_size);
 
-    SetConsoleOutputCP(CP_UTF8);
-    SetConsoleCP(CP_UTF8);
+    SetConsoleCP(866);                
+    SetConsoleOutputCP(866);
 
     parser = new CSV_Parser("assets/cinema.csv");
 
@@ -90,11 +92,11 @@ void Application::CheckPassword()
 {
     system("cls");
     std::string pass;
-    std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ Ð´Ð»Ñ Ñ‚Ð¾Ð³Ð¾, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð¿Ð¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ Ð´Ð¾ÑÑ‚ÑƒÐ¿ Ð°Ð´Ð¼Ð¸Ð½Ð¸ÑÑ‚Ñ€Ð°Ñ‚Ð¾Ñ€Ð°: ";
+    std::cout << "‚¢¥¤¨â¥ ¯ à®«ì ¤«ï â®£®, çâ®¡ë ¯®«ãç¨âì ¤®áâã¯  ¤¬¨­¨áâà â®à : ";
     cin >> pass;
     if (pass != password)
     {
-        cout << "Ð’ Ð´Ð¾ÑÑ‚ÑƒÐ¿Ðµ Ð¾Ñ‚ÐºÐ°Ð·Ð°Ð½Ð¾! Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ ÐµÑ‰Ñ‘ Ñ€Ð°Ð· Ð¸Ð»Ð¸ Ð²Ñ‹Ð¹Ð´Ð¸Ñ‚Ðµ" << endl;
+        cout << "‚ ¤®áâã¯¥ ®âª § ­®! ‚¢¥¤¨â¥ ¯ à®«ì ¥éñ à § ¨«¨ ¢ë©¤¨â¥" << endl;
         getchar();
     }
     isAccessGranted = (pass == password);
@@ -104,42 +106,40 @@ void Application::AddAllScenesElements()
 {
 
     menuScene->AddScene(
-        new MenuElem("ÐÐ´Ð¼Ð¸Ð½Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ð¾Ð½Ð½Ð¾Ðµ Ð¼ÐµÐ½ÑŽ", [this]()
+        new MenuElem("€¤¬¨­¨áâà æ¨®­­®¥ ¬¥­î", [this]()
                      { 
-                        if(isAccessGranted)
+                        if(isAccessGranted != true) this->CheckPassword();
                         SceneManager::ChangeScene("AdminScene"); }));
     menuScene->AddScene(
-        new MenuElem("ÐŸÐ¾ÐºÐ°Ð·Ð°Ñ‚ÑŒ ÑÐ¿Ð¸ÑÐ¾Ðº Ñ„Ð¸Ð»ÑŒÐ¼Ð¾Ð²", [this]()
+        new MenuElem("®ª § âì á¯¨á®ª ä¨«ì¬®¢", [this]()
                      { this->ShowCinemaList(); }));
     menuScene->AddScene(
-        new MenuElem("Ð¡Ð¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ñ„Ð¸Ð»ÑŒÐ¼Ñ‹ Ð¿Ð¾ id", [this]()
+        new MenuElem("‘®àâ¨à®¢ âì ä¨«ì¬ë ¯® id", [this]()
                      { this->SortById(false); }));
     menuScene->AddScene(
-        new MenuElem("Ð¡Ð¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ñ„Ð¸Ð»ÑŒÐ¼Ñ‹ Ð¿Ð¾ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸ÑŽ Ñ„Ð¸Ð»ÑŒÐ¼Ð°", [this]()
+        new MenuElem("‘®àâ¨à®¢ âì ä¨«ì¬ë ¯® ­ §¢ ­¨î ä¨«ì¬ ", [this]()
                      { this->SortByTitle(false); }));
     menuScene->AddScene(
-        new MenuElem("Ð¡Ð¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ñ„Ð¸Ð»ÑŒÐ¼Ñ‹ Ð¿Ð¾ id Ð¸Ð½Ð²ÐµÑ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾", [this]()
+        new MenuElem("‘®àâ¨à®¢ âì ä¨«ì¬ë ¯® id ¨­¢¥àâ¨à®¢ ­­®", [this]()
                      { this->SortById(true); }));
     menuScene->AddScene(
-        new MenuElem("Ð¡Ð¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ñ„Ð¸Ð»ÑŒÐ¼Ñ‹ Ð¿Ð¾ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸ÑŽ Ñ„Ð¸Ð»ÑŒÐ¼Ð° Ð¸Ð½Ð²ÐµÑ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾", [this]()
+        new MenuElem("‘®àâ¨à®¢ âì ä¨«ì¬ë ¯® ­ §¢ ­¨î ä¨«ì¬  ¨­¢¥àâ¨à®¢ ­­®", [this]()
                      { this->SortByTitle(true); }));
+
     menuScene->AddScene(
-        new MenuElem("ÐŸÐ¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ Ð¿Ñ€Ð°Ð²Ð° Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð°", [this]()
-                     { this->CheckPassword(); }));
-    menuScene->AddScene(
-        new MenuElem("Ð’Ñ‹Ñ…Ð¾Ð´ Ð¸Ð· Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñ‹", []()
+        new MenuElem("‚ëå®¤ ¨§ ¯à®£à ¬¬ë", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
 
     adminScene->AddScene(
-        new MenuElem("Ð”Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ñ„Ð¸Ð»ÑŒÐ¼ Ð² Ð¿Ñ€Ð¾ÐºÐ°Ñ‚", [this]()
+        new MenuElem("„®¡ ¢¨âì ä¨«ì¬ ¢ ¯à®ª â", [this]()
                      { this->AddCinema(); }));
     adminScene->AddScene(
-        new MenuElem("Ð£Ð´Ð°Ð»Ð¸Ñ‚ÑŒ Ñ„Ð¸Ð»ÑŒÐ¼ Ð¸Ð· Ð¿Ñ€Ð¾ÐºÐ°Ñ‚Ð°", [this]()
+        new MenuElem("“¤ «¨âì ä¨«ì¬ ¨§ ¯à®ª â ", [this]()
                      { this->DeleteCinema(); }));
 
     adminScene->AddScene(
-        new MenuElem("Ð’Ñ‹Ñ…Ð¾Ð´ Ð¸Ð· Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñ‹", []()
+        new MenuElem("‚ëå®¤ ¨§ ¯à®£à ¬¬ë", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
 }
@@ -147,8 +147,4 @@ void Application::Update()
 {
     AddAllScenesElements();
     SceneManager::ChangeScene("MainScene");
-
-    SetConsoleTextAttribute(console, 0);
-
-    parser->SaveToFile();
 }

@@ -23,7 +23,6 @@ class SceneManager
 public:
     static std::map<std::string, Scene *> Scenes;
 
-    // loads a Scene
     static void LoadScene(std::string name, Scene *s);
     static void ChangeScene(std::string name);
     static void Clear();

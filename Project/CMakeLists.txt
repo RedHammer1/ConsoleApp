@@ -7,6 +7,7 @@ set(ENGINE_PRIVATE_SOURCES ${src})
 
 add_executable(${EDITOR_PROJECT_NAME} ${src})
 
+
 target_link_libraries(${EDITOR_PROJECT_NAME} -static gcc stdc++ winpthread -dynamic -Wnarrowing)
 
 target_compile_features(${EDITOR_PROJECT_NAME} PUBLIC cxx_std_17 )
