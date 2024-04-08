@@ -25,14 +25,14 @@ enum Colors
 void PrintNameOfProgram()
 {
     std::cout << R"(
-╔═══════════════════════════════════════════════════════════════════════════════╗
-║ db   dD db    db db   db  .d88b.  d888888b d88888b  .d8b.  d888888b d8888b.	║ 
-║ 88 ,8P' 88    88 88   88 .8P  Y8. `~~88~~' 88'     d8' `8b `~~88~~' 88  `8D	║ 
-║ 88,8P   88    88 88ooo88 88    88    88    88ooooo 88ooo88    88    88oodD'	║ 
-║ 88`8b   88    88 88~~~88 88    88    88    88~~~~~ 88~~~88    88    88~~~	║ 
-║ 88 `88. 88b  d88 88   88 `8b  d8'    88    88.     88   88    88    88	║ 
-║ YP   YD ~Y8888P' YP   YP  `Y88P'     YP    Y88888P YP   YP    YP    88	║ 
-╚═══════════════════════════════════════════════════════════════════════════════╝)"
+?????????????????????????????????????????????????????????????????????????????????
+? db   dD db    db db   db  .d88b.  d888888b d88888b  .d8b.  d888888b d8888b.	? 
+? 88 ,8P' 88    88 88   88 .8P  Y8. `~~88~~' 88'     d8' `8b `~~88~~' 88  `8D	? 
+? 88,8P   88    88 88ooo88 88    88    88    88ooooo 88ooo88    88    88oodD'	? 
+? 88`8b   88    88 88~~~88 88    88    88    88~~~~~ 88~~~88    88    88~~~	? 
+? 88 `88. 88b  d88 88   88 `8b  d8'    88    88.     88   88    88    88	? 
+? YP   YD ~Y8888P' YP   YP  `Y88P'     YP    Y88888P YP   YP    YP    88	? 
+?????????????????????????????????????????????????????????????????????????????????)"
               << '\n';
 }
 
@@ -106,11 +106,11 @@ void Application::CheckPassword()
 {
     system("cls");
     std::string pass;
-    std::cout << "Введите пароль для того, чтобы получить доступ администратора: ";
+    std::cout << "┬тхфшЄх ярЁюы№ фы  Єюую, ўЄюс√ яюыєўшЄ№ фюёЄєя рфьшэшёЄЁрЄюЁр: ";
     cin >> pass;
     if (pass != password)
     {
-        cout << "В доступе отказано! Введите пароль ещё раз или выйдите" << endl;
+        cout << "┬ фюёЄєях юЄърчрэю! ┬тхфшЄх ярЁюы№ х∙╕ Ёрч шыш т√щфшЄх" << endl;
         getchar();
     }
     isAccessGranted = (pass == password);
@@ -118,44 +118,44 @@ void Application::CheckPassword()
 void Application::AddAllScenesElements()
 {
     menuScene->AddScene(
-        new MenuElem("Администрационное меню", [this]()
+        new MenuElem("└фьшэшёЄЁрЎшюээюх ьхэ■", [this]()
                      { 
                         if(!isAccessGranted) this->CheckPassword();
                         if(isAccessGranted) SceneManager::ChangeScene("AdminScene"); }));
     menuScene->AddScene(
-        new MenuElem("Показать список фильмов", [this]()
+        new MenuElem("╧юърчрЄ№ ёяшёюъ Їшы№ьют", [this]()
                      { SceneManager::ChangeScene("SortScene"); }));
     menuScene->AddScene(
-        new MenuElem("Выход из программы", []()
+        new MenuElem("┬√їюф шч яЁюуЁрьь√", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
 
     sortScene->AddScene(
-        new MenuElem("По id", [this]()
+        new MenuElem("╧ю id", [this]()
                      { this->SortById(false); }));
     sortScene->AddScene(
-        new MenuElem("По названию фильма", [this]()
+        new MenuElem("╧ю эрчтрэш■ Їшы№ьр", [this]()
                      { this->SortByTitle(false); }));
     sortScene->AddScene(
-        new MenuElem("По id инвертированно", [this]()
+        new MenuElem("╧ю id шэтхЁЄшЁютрээю", [this]()
                      { this->SortById(true); }));
     sortScene->AddScene(
-        new MenuElem("По названию фильма инвертированно", [this]()
+        new MenuElem("╧ю эрчтрэш■ Їшы№ьр шэтхЁЄшЁютрээю", [this]()
                      { this->SortByTitle(true); }));
     sortScene->AddScene(
-        new MenuElem("Выход из программы", []()
+        new MenuElem("┬√їюф шч яЁюуЁрьь√", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
 
     adminScene->AddScene(
-        new MenuElem("Добавить фильм в прокат", [this]()
+        new MenuElem("─юсртшЄ№ Їшы№ь т яЁюърЄ", [this]()
                      { this->AddCinema(); }));
     adminScene->AddScene(
-        new MenuElem("Удалить фильм из проката", [this]()
+        new MenuElem("╙фрышЄ№ Їшы№ь шч яЁюърЄр", [this]()
                      { this->DeleteCinema(); }));
 
     adminScene->AddScene(
-        new MenuElem("Выход из программы", []()
+        new MenuElem("┬√їюф шч яЁюуЁрьь√", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
 }

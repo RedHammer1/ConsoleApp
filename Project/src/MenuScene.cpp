@@ -17,13 +17,13 @@ void MenuScene::Update()
           this->action();
           
 
-          std::cout << "‚ à¨ ­âë: " << std::endl;
+          std::cout << "Âàðèàíòû: " << std::endl;
           for (int i = 0; i < scenes.size(); i++)
           {
                scenes[i]->Print(i);
           }
 
-          std::cout << "‚ë¡¥à¨â¥ ¢ à¨ ­â (q ¤«ï ¢ëå®¤ )" << std::endl;
+          std::cout << "Âûáåðèòå âàðèàíò (q äëÿ âûõîäà)" << std::endl;
           std::string variant;
           std::cout << ">>> ";
           std::cin >> variant ;
@@ -40,7 +40,7 @@ void MenuScene::Update()
           }
           catch (const std::invalid_argument &)
           {
-               std::cout << "¥¢¥à­ë© ¢¢®¤!" << std::endl;
+               std::cout << "Íåâåðíûé ââîä!" << std::endl;
                getchar();
                continue;
           }
@@ -50,7 +50,7 @@ void MenuScene::Update()
           }
           else
           {
-               std::cout << "¥¢¥à­ë© ¢¢®¤!" << std::endl;
+               std::cout << "Íåâåðíûé ââîä!" << std::endl;
                getchar();
           }
      }
