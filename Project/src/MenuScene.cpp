@@ -16,14 +16,13 @@ void MenuScene::Update()
           system("cls");
           this->action();
           
-
-          std::cout << "Âàðèàíòû: " << std::endl;
+          std::cout << "‚ à¨ ­âë: " << std::endl;
           for (int i = 0; i < scenes.size(); i++)
           {
                scenes[i]->Print(i);
           }
 
-          std::cout << "Âûáåðèòå âàðèàíò (q äëÿ âûõîäà)" << std::endl;
+          std::cout << "‚ë¡¥à¨â¥ ¢ à¨ ­â (q ¤«ï ¢ëå®¤  ­  ¯à¥¤ë¤ãéãî áæ¥­ã)" << std::endl;
           std::string variant;
           std::cout << ">>> ";
           std::cin >> variant ;
@@ -40,8 +39,8 @@ void MenuScene::Update()
           }
           catch (const std::invalid_argument &)
           {
-               std::cout << "Íåâåðíûé ââîä!" << std::endl;
-               getchar();
+               std::cout << "¥¢¥à­ë© ¢¢®¤!" << std::endl;
+               Sleep(100);
                continue;
           }
           if (choice > 0 && choice <= (int)scenes.size())
@@ -50,8 +49,8 @@ void MenuScene::Update()
           }
           else
           {
-               std::cout << "Íåâåðíûé ââîä!" << std::endl;
-               getchar();
+               std::cout << "¥¢¥à­ë© ¢¢®¤!" << std::endl;
+               Sleep(100);
           }
      }
 }

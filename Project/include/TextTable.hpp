@@ -51,9 +51,9 @@ private:
         RowType bottom;
     };
 
-    TableStyle DoubleLineStyle = {"Í", "º", {"É", "Ë", "»"}, {"Ì", "Î", "¹"}, {"È", "Ê", "¼"}};
+    
 
-    TableStyle style = DoubleLineStyle;
+    TableStyle style = {"Í", "º", {"É", "Ë", "»"}, {"Ì", "Î", "¹"}, {"È", "Ê", "¼"}};
 
     const std::string SPACE_CHARACTER = " ";
 

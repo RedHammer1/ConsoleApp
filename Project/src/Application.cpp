@@ -25,14 +25,14 @@ enum Colors
 void PrintNameOfProgram()
 {
     std::cout << R"(
-?????????????????????????????????????????????????????????????????????????????????
-? db   dD db    db db   db  .d88b.  d888888b d88888b  .d8b.  d888888b d8888b.	? 
-? 88 ,8P' 88    88 88   88 .8P  Y8. `~~88~~' 88'     d8' `8b `~~88~~' 88  `8D	? 
-? 88,8P   88    88 88ooo88 88    88    88    88ooooo 88ooo88    88    88oodD'	? 
-? 88`8b   88    88 88~~~88 88    88    88    88~~~~~ 88~~~88    88    88~~~	? 
-? 88 `88. 88b  d88 88   88 `8b  d8'    88    88.     88   88    88    88	? 
-? YP   YD ~Y8888P' YP   YP  `Y88P'     YP    Y88888P YP   YP    YP    88	? 
-?????????????????????????????????????????????????????????????????????????????????)"
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║ db   dD db    db db   db  .d88b.  d888888b d88888b  .d8b.  d888888b d8888b.	║ 
+║ 88 ,8P' 88    88 88   88 .8P  Y8. `~~88~~' 88'     d8' `8b `~~88~~' 88  `8D	║ 
+║ 88,8P   88    88 88ooo88 88    88    88    88ooooo 88ooo88    88    88oodD'	║ 
+║ 88`8b   88    88 88~~~88 88    88    88    88~~~~~ 88~~~88    88    88~~~	║ 
+║ 88 `88. 88b  d88 88   88 `8b  d8'    88    88.     88   88    88    88	║ 
+║ YP   YD ~Y8888P' YP   YP  `Y88P'     YP    Y88888P YP   YP    YP    88	║ 
+╚═══════════════════════════════════════════════════════════════════════════════╝)"
               << '\n';
 }
 
@@ -49,7 +49,7 @@ Application::Application()
     CONSOLE_SCREEN_BUFFER_INFOEX cbi;
     cbi.cbSize = sizeof(CONSOLE_SCREEN_BUFFER_INFOEX);
     GetConsoleScreenBufferInfoEx(console, &cbi);
-    cbi.wAttributes = Colors::CYAN * 16 + Colors::LIGHTGREEN;
+    cbi.wAttributes = Colors::WHITE * 16 + Colors::LIGHTGREEN;
     SetConsoleScreenBufferInfoEx(console, &cbi);
 
     COORD new_size =
@@ -77,28 +77,34 @@ Application::Application()
 
 void Application::ShowCinemaList()
 {
+    
     parser->ReadFromFile();
+    
 }
 void Application::AddCinema()
 {
     parser->AddCinema();
+
+    Sleep(500);
+    std::cout << "Нажмите Enter, чтобы продолжить!" << std::endl;
     getchar();
 }
 
 void Application::SortById(bool reverse)
 {
     parser->SortById(reverse);
-    getchar();
+    parser->SaveToFile();
 }
 void Application::SortByTitle(bool reverse)
 {
     parser->SortByTitle(reverse);
-    getchar();
+    parser->SaveToFile();
 }
 
 void Application::DeleteCinema()
 {
     parser->DeleteCinema();
+    std::cout << "Нажмите Enter, чтобы продолжить!" << std::endl;
     getchar();
 }
 
@@ -106,56 +112,56 @@ void Application::CheckPassword()
 {
     system("cls");
     std::string pass;
-    std::cout << "┬тхфшЄх ярЁюы№ фы  Єюую, ўЄюс√ яюыєўшЄ№ фюёЄєя рфьшэшёЄЁрЄюЁр: ";
+    std::cout << "Введите пароль для того, чтобы получить доступ администратора: ";
     cin >> pass;
     if (pass != password)
     {
-        cout << "┬ фюёЄєях юЄърчрэю! ┬тхфшЄх ярЁюы№ х∙╕ Ёрч шыш т√щфшЄх" << endl;
-        getchar();
+        cout << "В доступе отказано! Введите пароль!" << endl;
+        Sleep(300);
     }
     isAccessGranted = (pass == password);
 }
 void Application::AddAllScenesElements()
 {
     menuScene->AddScene(
-        new MenuElem("└фьшэшёЄЁрЎшюээюх ьхэ■", [this]()
+        new MenuElem("Администрационное меню", [this]()
                      { 
                         if(!isAccessGranted) this->CheckPassword();
                         if(isAccessGranted) SceneManager::ChangeScene("AdminScene"); }));
     menuScene->AddScene(
-        new MenuElem("╧юърчрЄ№ ёяшёюъ Їшы№ьют", [this]()
+        new MenuElem("Показать список фильмов", [this]()
                      { SceneManager::ChangeScene("SortScene"); }));
     menuScene->AddScene(
-        new MenuElem("┬√їюф шч яЁюуЁрьь√", []()
+        new MenuElem("Выход из программы", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
 
     sortScene->AddScene(
-        new MenuElem("╧ю id", [this]()
+        new MenuElem("По id", [this]()
                      { this->SortById(false); }));
     sortScene->AddScene(
-        new MenuElem("╧ю эрчтрэш■ Їшы№ьр", [this]()
+        new MenuElem("По названию фильма", [this]()
                      { this->SortByTitle(false); }));
     sortScene->AddScene(
-        new MenuElem("╧ю id шэтхЁЄшЁютрээю", [this]()
+        new MenuElem("По id инвертированно", [this]()
                      { this->SortById(true); }));
     sortScene->AddScene(
-        new MenuElem("╧ю эрчтрэш■ Їшы№ьр шэтхЁЄшЁютрээю", [this]()
+        new MenuElem("По названию фильма инвертированно", [this]()
                      { this->SortByTitle(true); }));
     sortScene->AddScene(
-        new MenuElem("┬√їюф шч яЁюуЁрьь√", []()
+        new MenuElem("Выход из программы", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
 
     adminScene->AddScene(
-        new MenuElem("─юсртшЄ№ Їшы№ь т яЁюърЄ", [this]()
+        new MenuElem("Добавить фильм в прокат", [this]()
                      { this->AddCinema(); }));
     adminScene->AddScene(
-        new MenuElem("╙фрышЄ№ Їшы№ь шч яЁюърЄр", [this]()
+        new MenuElem("Удалить фильм из проката", [this]()
                      { this->DeleteCinema(); }));
 
     adminScene->AddScene(
-        new MenuElem("┬√їюф шч яЁюуЁрьь√", []()
+        new MenuElem("Выход из программы", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
 }
