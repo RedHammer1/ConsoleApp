@@ -118,6 +118,7 @@ void Application::CheckPassword()
     {
         cout << "В доступе отказано! Введите пароль!" << endl;
         Sleep(300);
+        CheckPassword();
     }
     isAccessGranted = (pass == password);
 }

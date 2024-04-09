@@ -1,11 +1,6 @@
 #include "../include/MenuScene.hpp"
 
 
-
-
-
-
-
 void MenuScene::Destroy()
 {
 }

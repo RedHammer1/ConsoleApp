@@ -11,6 +11,8 @@ public:
     void SaveToFile();
     void ReadFromFile();
 
+    
+
     void AddCinema();
     void DeleteCinema();
 
@@ -23,4 +25,6 @@ private:
     std::vector<Cinema *> cinemaList;
     std::string filename;
     int lastID = 0;
+
+    void ReadFile();
 };

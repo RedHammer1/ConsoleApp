@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include<windows.h>  
+#include <windows.h>
 
 #include <algorithm>
 #include <array>
@@ -15,7 +15,12 @@ CSV_Parser::CSV_Parser(std::string filename)
 {
     this->filename = filename;
 
-    ifstream file(filename);
+    ReadFile();
+}
+
+void CSV_Parser::ReadFile()
+{
+    ifstream file(this->filename);
 
     string line;
     while (getline(file, line))
@@ -27,9 +32,9 @@ CSV_Parser::CSV_Parser(std::string filename)
         getline(ss, director);
         int _id = stoi(id);
 
-        Cinema *cinema = new Cinema(_id, title, director);
-        cinemaList.push_back(cinema);
+        cinemaList.push_back(new Cinema(_id, title, director));
     }
+
     file.close();
 }
 
@@ -65,22 +70,7 @@ void CSV_Parser::SaveToFile()
 void CSV_Parser::ReadFromFile()
 {
     cinemaList.clear();
-    ifstream file(this->filename);
-
-    string line;
-    while (getline(file, line))
-    {
-        stringstream ss(line);
-        string title, director, id;
-        getline(ss, id, ';');
-        getline(ss, title, ';');
-        getline(ss, director);
-        int _id = stoi(id);
-
-        cinemaList.push_back(new Cinema(_id, title, director));
-    }
-    
-    file.close();
+    ReadFile();
     ConsoleTable table{"ID", "”ˆ‹œŒ", "…†ˆ‘…"};
     table.setPadding(5);
 
@@ -91,9 +81,6 @@ void CSV_Parser::ReadFromFile()
         table += {std::to_string(cinema->GetId()), cinema->GetTitle(), cinema->GetDirector()};
     }
     std::cout << table;
-
-    
-    
 }
 
 void CSV_Parser::AddCinema()
@@ -140,11 +127,11 @@ void CSV_Parser::DeleteCinema()
     auto it = std::find(cinemaList.begin(), cinemaList.end(), _id);
     if (it != cinemaList.end())
         cinemaList.erase(it);
-    for(int i = 0; i < cinemaList.size(); i++)
+    for (int i = 0; i < cinemaList.size(); i++)
     {
-        cinemaList[i]->SetId(i+1);
+        cinemaList[i]->SetId(i + 1);
     }
-    
+
     SaveToFile();
 }
 
@@ -166,5 +153,4 @@ void CSV_Parser::SortByTitle(bool reverse)
             { return a->GetTitle() > b->GetTitle(); }
                 : [](Cinema *a, Cinema *b)
             { return a->GetTitle() < b->GetTitle(); });
-    
 }
