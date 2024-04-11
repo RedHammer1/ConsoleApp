@@ -53,7 +53,7 @@ private:
 
     
 
-    TableStyle style = {"Í", "º", {"É", "Ë", "»"}, {"Ì", "Î", "¹"}, {"È", "Ê", "¼"}};
+    TableStyle style = {"-", "|", {"+", "+", "+"}, {"+", "+", "+"}, {"+", "+", "+"}};
 
     const std::string SPACE_CHARACTER = " ";
 

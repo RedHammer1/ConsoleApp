@@ -44,7 +44,7 @@ void CSV_Parser::SaveToFile()
     {
         ofstream file(filename);
 
-        ConsoleTable table{"ID", "”ˆ‹œŒ", "…†ˆ‘…"};
+        ConsoleTable table{"ID", "ÔÈËÜÌ", "ĞÅÆÈÑÅĞ"};
         table.setPadding(5);
 
         for (int i = 0; i < cinemaList.size(); i++)
@@ -71,7 +71,7 @@ void CSV_Parser::ReadFromFile()
 {
     cinemaList.clear();
     ReadFile();
-    ConsoleTable table{"ID", "”ˆ‹œŒ", "…†ˆ‘…"};
+    ConsoleTable table{"ID", "ÔÈËÜÌ", "ĞÅÆÈÑÅĞ"};
     table.setPadding(5);
 
     for (int i = 0; i < cinemaList.size(); i++)
@@ -86,10 +86,10 @@ void CSV_Parser::ReadFromFile()
 void CSV_Parser::AddCinema()
 {
     lastID = cinemaList.size() + 1;
-    cout << "„«ï ¤®¡ ¢«¥­¨ï ä¨«ì¬  ¢ ¯à®ª â, ¯®¦ ©«ã©áâ , ¢¢¥¤¨â¥ ­ §¢ ­¨¥ ä¨«ì¬  ¨ ”ˆ à¥¦¨á¥à : " << endl;
+    cout << "Äëÿ äîáàâëåíèÿ ôèëüìà â ïğîêàò, ïîæàéëóéñòà, ââåäèòå íàçâàíèå ôèëüìà è ÔÈÎ ğåæèñåğà: " << endl;
 
     string title, director;
-    cout << "‚¢¥¤¨â¥ ­ §¢ ­¨¥ ä¨«ì¬ : ";
+    cout << "Ââåäèòå íàçâàíèå ôèëüìà: ";
     try
     {
         getline(cin, title);
@@ -99,7 +99,7 @@ void CSV_Parser::AddCinema()
         std::cerr << e.what() << '\n';
     }
 
-    cout << "‚¢¥¤¨â¥ ”ˆ à¥¦¨á¥à : ";
+    cout << "Ââåäèòå ÔÈÎ ğåæèñåğà: ";
     try
     {
         getline(cin, director);
@@ -118,7 +118,7 @@ void CSV_Parser::DeleteCinema()
     this->ReadFromFile();
 
     int id;
-    cout << "‚¢¥¤¨âì ­®¬¥à ä¨«ì¬  ¤«ï ¯®á«¥¤ãîé¥£® ã¤ «¥­¨ï: ";
+    cout << "Ââåäèòü íîìåğ ôèëüìà äëÿ ïîñëåäóşùåãî óäàëåíèÿ: ";
     cin >> id;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
