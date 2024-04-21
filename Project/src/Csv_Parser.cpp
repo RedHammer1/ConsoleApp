@@ -85,6 +85,7 @@ void CSV_Parser::ReadFromFile()
 
 void CSV_Parser::AddCinema()
 {
+    system("cls");
     lastID = cinemaList.size() + 1;
     cout << "Для добавления фильма в прокат, пожайлуйста, введите название фильма и ФИО режисера: " << endl;
 
@@ -112,19 +113,46 @@ void CSV_Parser::AddCinema()
     Cinema *cinemaItem = new Cinema(lastID, title, director);
     cinemaList.push_back(cinemaItem);
     SaveToFile();
+
+    std::string variant;
+
+    std::cout << "Хотите ли вы добавить ещё один фильм? (д или y(лат) - да, н или n - нет)" << std::endl;
+    std::cin >> variant;
+
+    std::cin.ignore(100, '\n');
+
+    if (variant == "д" || variant == "y")
+    {
+        AddCinema();
+    }
+    else if (variant == "н" || variant == "n")
+    {
+        Sleep(100);
+    }
+    else
+    {
+        std::cout << "Неверный ввод!" << std::endl;
+        Sleep(100);
+    }
 }
 void CSV_Parser::DeleteCinema()
 {
+    system("cls");
     this->ReadFromFile();
 
     int id;
-    cout << "Введить номер фильма для последующего удаления: ";
+    cout << "Введить номер фильма для последующего удаления: " << endl;
+    std::cout << ">>> ";
     cin >> id;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    Cinema *_id = cinemaList[id - 1];
+    if (cinemaList.size() < id || id <= 0)
+    {
+        std::cout << "В списке нет фильма номером" << id << std::endl;
+        return;
+    }
 
-    auto it = std::find(cinemaList.begin(), cinemaList.end(), _id);
+    auto it = std::find(cinemaList.begin(), cinemaList.end(), cinemaList[id - 1]);
     if (it != cinemaList.end())
         cinemaList.erase(it);
     for (int i = 0; i < cinemaList.size(); i++)
@@ -133,6 +161,30 @@ void CSV_Parser::DeleteCinema()
     }
 
     SaveToFile();
+
+    if (cinemaList.size() > 0)
+    {
+        std::string variant;
+
+        std::cout << "Хотите ли вы удалить ещё один фильм? (д или y(лат) - да, н или n - нет)" << std::endl;
+        std::cin >> variant;
+
+        std::cin.ignore(100, '\n');
+
+        if (variant == "д" || variant == "y")
+        {
+            DeleteCinema();
+        }
+        else if (variant == "н" || variant == "n")
+        {
+            Sleep(100);
+        }
+        else
+        {
+            std::cout << "Неверный ввод!" << std::endl;
+            Sleep(100);
+        }
+    }
 }
 
 void CSV_Parser::SortById(bool reverse)

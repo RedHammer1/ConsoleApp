@@ -6,6 +6,7 @@ void MenuScene::Destroy()
 }
 void MenuScene::Update()
 {
+     
      while ((true))
      {
           system("cls");
@@ -17,7 +18,7 @@ void MenuScene::Update()
                scenes[i]->Print(i);
           }
 
-          std::cout << "Выберите вариант (q для выхода на предыдущую сцену)" << std::endl;
+          std::cout << "Выберите вариант (q - назад)" << std::endl;
           std::string variant;
           std::cout << ">>> ";
           std::cin >> variant ;

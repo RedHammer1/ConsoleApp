@@ -84,10 +84,6 @@ void Application::ShowCinemaList()
 void Application::AddCinema()
 {
     parser->AddCinema();
-
-    Sleep(500);
-    std::cout << "Нажмите Enter, чтобы продолжить!" << std::endl;
-    getchar();
 }
 
 void Application::SortById(bool reverse)
@@ -104,15 +100,14 @@ void Application::SortByTitle(bool reverse)
 void Application::DeleteCinema()
 {
     parser->DeleteCinema();
-    std::cout << "Нажмите Enter, чтобы продолжить!" << std::endl;
-    getchar();
 }
 
 void Application::CheckPassword()
 {
     system("cls");
     std::string pass;
-    std::cout << "Введите пароль для того, чтобы получить доступ администратора: ";
+    std::cout << "Введите пароль для того, чтобы получить доступ администратора: " << std::endl;
+    std::cout << ">>> ";
     cin >> pass;
     if (pass != password)
     {
