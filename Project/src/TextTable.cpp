@@ -12,7 +12,7 @@ void ConsoleTable::setPadding(unsigned int n) {
 
 bool ConsoleTable::addRow(std::initializer_list<std::string> row) {
     if (row.size() > widths.size()) {
-        throw std::invalid_argument{"n-ый размер добавляемой строки должен быть равен размеру заголовка"};
+        throw std::invalid_argument{"ЋиЁЎЄ "};
     }
 
     auto r = std::vector<std::string>{row};
@@ -34,7 +34,7 @@ bool ConsoleTable::removeRow(unsigned int index) {
 
 ConsoleTable &ConsoleTable::operator+=(std::initializer_list<std::string> row) {
     if (row.size() > widths.size()) {
-        throw std::invalid_argument{"Размер добавляемой строки должен быть равен размеру заголовка"};
+        throw std::invalid_argument{"ЋиЁЎЄ "};
     }
 
     addRow(row);
@@ -43,7 +43,7 @@ ConsoleTable &ConsoleTable::operator+=(std::initializer_list<std::string> row) {
 
 ConsoleTable &ConsoleTable::operator-=(const uint32_t rowIndex) {
     if (rows.size() < rowIndex)
-        throw std::out_of_range{"Индекс строки выходит за пределы диапазона."};
+        throw std::out_of_range{"ЋиЁЎЄ ."};
 
     removeRow(rowIndex);
     return *this;
@@ -110,16 +110,16 @@ bool ConsoleTable::sort(bool ascending) {
 
 void ConsoleTable::updateRow(unsigned int row, unsigned int header, std::string data) {
     if (row > rows.size() - 1)
-        throw std::out_of_range{"Индекс строки выходит за пределы диапазона."};
+        throw std::out_of_range{"ЋиЁЎЄ ."};
     if (header > headers.size() - 1)
-        throw std::out_of_range{"Индекс заголовка выходит за пределы диапазона."};
+        throw std::out_of_range{"ЋиЁЎЄ ."};
 
     rows[row][header] = data;
 }
 
 void ConsoleTable::updateHeader(unsigned int header, std::string text) {
     if (header > headers.size())
-        throw std::out_of_range{"Индекс заголовка выходит за пределы диапазона."};
+        throw std::out_of_range{"ЋиЁЎЄ ."};
 
     headers[header] = text;
 }

@@ -58,8 +58,8 @@ Application::Application()
             short(info.srWindow.Bottom - info.srWindow.Top + 1)};
     SetConsoleScreenBufferSize(console, new_size);
 
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
+    SetConsoleCP(866);
+    SetConsoleOutputCP(866);
 
     parser = new CSV_Parser("assets/cinema.csv");
 
@@ -102,18 +102,25 @@ void Application::DeleteCinema()
     parser->DeleteCinema();
 }
 
-void Application::CheckPassword()
+void Application::CheckAccout()
 {
     system("cls");
-    std::string pass;
-    std::cout << "┬тхфшЄх ярЁюы№ фы  Єюую, ўЄюс√ яюыєўшЄ№ фюёЄєя рфьшэшёЄЁрЄюЁр: " << std::endl;
+    std::cout << "Введите логин пароль для того, чтобы получить доступ администратора: " << std::endl;
+    std::string pass, passLogin;
+
+    std::cout << "Введите логин: " << std::endl;
+    std::cout << ">>> ";
+    cin >> passLogin;
+
+    std::cout << "Введите пароль: " << std::endl;
     std::cout << ">>> ";
     cin >> pass;
-    if (pass != password)
+
+    if (passLogin != login && pass != password)
     {
-        cout << "┬ фюёЄєях юЄърчрэю! ┬тхфшЄх ярЁюы№!" << endl;
+        cout << "Такого пользователя не существует, выйдите или зарегестрируйстесь!!" << endl;
         Sleep(300);
-        CheckPassword();
+        CheckAccout();
     }
     else
     {
@@ -124,44 +131,44 @@ void Application::CheckPassword()
 void Application::AddAllScenesElements()
 {
     menuScene->AddScene(
-        new MenuElem("└фьшэшёЄЁрЎшюээюх ьхэ■", [this]()
+        new MenuElem("Администрационное меню", [this]()
                      { 
-                        if(!isAccessGranted) this->CheckPassword();
+                        if(!isAccessGranted) this->CheckAccout();
                         if(isAccessGranted) SceneManager::ChangeScene("AdminScene"); }));
     menuScene->AddScene(
-        new MenuElem("╧юърчрЄ№ ёяшёюъ Їшы№ьют", [this]()
+        new MenuElem("Показать список фильмов", [this]()
                      { SceneManager::ChangeScene("SortScene"); }));
     menuScene->AddScene(
-        new MenuElem("┬√їюф шч яЁюуЁрьь√", []()
+        new MenuElem("Выход из программы", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
 
     sortScene->AddScene(
-        new MenuElem("╧ю id", [this]()
+        new MenuElem("По id", [this]()
                      { this->SortById(false); }));
     sortScene->AddScene(
-        new MenuElem("╧ю эрчтрэш■ Їшы№ьр", [this]()
+        new MenuElem("По названию фильма", [this]()
                      { this->SortByTitle(false); }));
     sortScene->AddScene(
-        new MenuElem("╧ю id шэтхЁЄшЁютрээю", [this]()
+        new MenuElem("По id инвертированно", [this]()
                      { this->SortById(true); }));
     sortScene->AddScene(
-        new MenuElem("╧ю эрчтрэш■ Їшы№ьр шэтхЁЄшЁютрээю", [this]()
+        new MenuElem("По названию фильма инвертированно", [this]()
                      { this->SortByTitle(true); }));
     sortScene->AddScene(
-        new MenuElem("┬√їюф шч яЁюуЁрьь√", []()
+        new MenuElem("Выход из программы", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
 
     adminScene->AddScene(
-        new MenuElem("─юсртшЄ№ Їшы№ь т яЁюърЄ", [this]()
+        new MenuElem("Добавить фильм в прокат", [this]()
                      { this->AddCinema(); }));
     adminScene->AddScene(
-        new MenuElem("╙фрышЄ№ Їшы№ь шч яЁюърЄр", [this]()
+        new MenuElem("Удалить фильм из проката", [this]()
                      { this->DeleteCinema(); }));
 
     adminScene->AddScene(
-        new MenuElem("┬√їюф шч яЁюуЁрьь√", []()
+        new MenuElem("Выход из программы", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
 }

@@ -44,7 +44,7 @@ void CSV_Parser::SaveToFile()
     {
         ofstream file(filename);
 
-        ConsoleTable table{"ID", "ÔÈËÜÌ", "ĞÅÆÈÑÅĞ"};
+        ConsoleTable table{"ID", "”ˆ‹œŒ", "…†ˆ‘…"};
         table.setPadding(5);
 
         for (int i = 0; i < cinemaList.size(); i++)
@@ -71,7 +71,7 @@ void CSV_Parser::ReadFromFile()
 {
     cinemaList.clear();
     ReadFile();
-    ConsoleTable table{"ID", "ÔÈËÜÌ", "ĞÅÆÈÑÅĞ"};
+    ConsoleTable table{"ID", "”ˆ‹œŒ", "…†ˆ‘…"};
     table.setPadding(5);
 
     for (int i = 0; i < cinemaList.size(); i++)
@@ -87,10 +87,10 @@ void CSV_Parser::AddCinema()
 {
     system("cls");
     lastID = cinemaList.size() + 1;
-    cout << "Äëÿ äîáàâëåíèÿ ôèëüìà â ïğîêàò, ïîæàéëóéñòà, ââåäèòå íàçâàíèå ôèëüìà è ÔÈÎ ğåæèñåğà: " << endl;
+    cout << "„«ï ¤®¡ ¢«¥­¨ï ä¨«ì¬  ¢ ¯à®ª â, ¯®¦ ©«ã©áâ , ¢¢¥¤¨â¥ ­ §¢ ­¨¥ ä¨«ì¬  ¨ ”ˆ à¥¦¨á¥à : " << endl;
 
     string title, director;
-    cout << "Ââåäèòå íàçâàíèå ôèëüìà: ";
+    cout << "‚¢¥¤¨â¥ ­ §¢ ­¨¥ ä¨«ì¬ : ";
     try
     {
         getline(cin, title);
@@ -100,7 +100,7 @@ void CSV_Parser::AddCinema()
         std::cerr << e.what() << '\n';
     }
 
-    cout << "Ââåäèòå ÔÈÎ ğåæèñåğà: ";
+    cout << "‚¢¥¤¨â¥ ”ˆ à¥¦¨á¥à : ";
     try
     {
         getline(cin, director);
@@ -116,22 +116,22 @@ void CSV_Parser::AddCinema()
 
     std::string variant;
 
-    std::cout << "Õîòèòå ëè âû äîáàâèòü åù¸ îäèí ôèëüì? (ä èëè y(ëàò) - äà, í èëè n - íåò)" << std::endl;
+    std::cout << "•®â¨â¥ «¨ ¢ë ¤®¡ ¢¨âì ¥éñ ®¤¨­ ä¨«ì¬? (¤ ¨«¨ y(« â) - ¤ , ­ ¨«¨ n - ­¥â)" << std::endl;
     std::cin >> variant;
 
     std::cin.ignore(100, '\n');
 
-    if (variant == "ä" || variant == "y")
+    if (variant == "¤" || variant == "y")
     {
         AddCinema();
     }
-    else if (variant == "í" || variant == "n")
+    else if (variant == "­" || variant == "n")
     {
         Sleep(100);
     }
     else
     {
-        std::cout << "Íåâåğíûé ââîä!" << std::endl;
+        std::cout << "¥¢¥à­ë© ¢¢®¤!" << std::endl;
         Sleep(100);
     }
 }
@@ -141,14 +141,14 @@ void CSV_Parser::DeleteCinema()
     this->ReadFromFile();
 
     int id;
-    cout << "Ââåäèòü íîìåğ ôèëüìà äëÿ ïîñëåäóşùåãî óäàëåíèÿ: " << endl;
+    cout << "‚¢¥¤¨âì ­®¬¥à ä¨«ì¬  ¤«ï ¯®á«¥¤ãîé¥£® ã¤ «¥­¨ï: " << endl;
     std::cout << ">>> ";
     cin >> id;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     if (cinemaList.size() < id || id <= 0)
     {
-        std::cout << "Â ñïèñêå íåò ôèëüìà íîìåğîì" << id << std::endl;
+        std::cout << "‚ á¯¨áª¥ ­¥â ä¨«ì¬  ­®¬¥à®¬" << id << std::endl;
         return;
     }
 
@@ -166,22 +166,22 @@ void CSV_Parser::DeleteCinema()
     {
         std::string variant;
 
-        std::cout << "Õîòèòå ëè âû óäàëèòü åù¸ îäèí ôèëüì? (ä èëè y(ëàò) - äà, í èëè n - íåò)" << std::endl;
+        std::cout << "•®â¨â¥ «¨ ¢ë ã¤ «¨âì ¥éñ ®¤¨­ ä¨«ì¬? (¤ ¨«¨ y(« â) - ¤ , ­ ¨«¨ n - ­¥â)" << std::endl;
         std::cin >> variant;
 
         std::cin.ignore(100, '\n');
 
-        if (variant == "ä" || variant == "y")
+        if (variant == "¤" || variant == "y")
         {
             DeleteCinema();
         }
-        else if (variant == "í" || variant == "n")
+        else if (variant == "­" || variant == "n")
         {
             Sleep(100);
         }
         else
         {
-            std::cout << "Íåâåğíûé ââîä!" << std::endl;
+            std::cout << "¥¢¥à­ë© ¢¢®¤!" << std::endl;
             Sleep(100);
         }
     }

@@ -26,9 +26,10 @@ private:
     void SortById(bool reverse);
     void SortByTitle(bool reverse);
 
-    void CheckPassword();
+    void CheckAccout();
 
     std::string password = "admin";
+    std::string login = "login";
 
     bool isProtected;
     bool isAccessGranted = false;
