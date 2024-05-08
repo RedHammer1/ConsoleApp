@@ -20,12 +20,32 @@ void Cinema::SetTitle(std::string title)
     this->title = title;
 }
 
-std::string Cinema::GetDirector()
+std::string Cinema::GetGenre()
 {
-    return director;
+    return genre;
 }
 
-void Cinema::SetDirector(std::string director)
+void Cinema::SetGenre(std::string genre)
 {
-    this->director = director;
+    this->genre = genre;
+}
+
+unsigned int Cinema::GetPrice()
+{
+    return price;
+}
+
+void Cinema::SetPrice(unsigned int price)
+{
+    this->price = price;
+}
+
+unsigned int Cinema::GetYear()
+{
+    return year;
+}
+
+void Cinema::SetYear(unsigned int year)
+{
+    this->year = year;
 }

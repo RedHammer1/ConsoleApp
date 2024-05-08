@@ -26,13 +26,18 @@ void CSV_Parser::ReadFile()
     while (getline(file, line))
     {
         stringstream ss(line);
-        string title, director, id;
+        string title, genre, id, year, price;
         getline(ss, id, ';');
         getline(ss, title, ';');
-        getline(ss, director);
+        getline(ss, genre, ';');
+        getline(ss, year, ';');
+        getline(ss, price);
         int _id = stoi(id);
 
-        cinemaList.push_back(new Cinema(_id, title, director));
+        int _price = stoi(price);
+        int _year = stoi(year);
+
+        cinemaList.push_back(new Cinema(_id, title, genre, _year, _price));
     }
 
     file.close();
@@ -44,17 +49,19 @@ void CSV_Parser::SaveToFile()
     {
         ofstream file(filename);
 
-        ConsoleTable table{"ID", "ФИЛЬМ", "РЕЖИСЕР"};
+        ConsoleTable table{"ID", "ФИЛЬМ", "РЕЖИСЕР", "ГОД ВЫПУСКА", "ЦЕНА"};
         table.setPadding(5);
 
         for (int i = 0; i < cinemaList.size(); i++)
         {
             Cinema *cinema = cinemaList[i];
-            table += {std::to_string(cinema->GetId()), cinema->GetTitle(), cinema->GetDirector()};
+            table += {std::to_string(cinema->GetId()), cinema->GetTitle(), cinema->GetGenre(), std::to_string(cinema->GetYear()), std::to_string(cinema->GetPrice())};
 
             file << cinema->GetId() << ";"
                  << cinema->GetTitle() << ";"
-                 << cinema->GetDirector() << std::endl;
+                 << cinema->GetGenre() << ";"
+                 << cinema->GetYear() << ";"
+                 << cinema->GetPrice() << std::endl;
         }
         std::cout << table;
 
@@ -71,14 +78,14 @@ void CSV_Parser::ReadFromFile()
 {
     cinemaList.clear();
     ReadFile();
-    ConsoleTable table{"ID", "ФИЛЬМ", "РЕЖИСЕР"};
+    ConsoleTable table{"ID", "ФИЛЬМ", "РЕЖИСЕР", "ГОД ВЫПУСКА", "ЦЕНА"};
     table.setPadding(5);
 
     for (int i = 0; i < cinemaList.size(); i++)
     {
         Cinema *cinema = cinemaList[i];
 
-        table += {std::to_string(cinema->GetId()), cinema->GetTitle(), cinema->GetDirector()};
+        table += {std::to_string(cinema->GetId()), cinema->GetTitle(), cinema->GetGenre(), std::to_string(cinema->GetYear()), std::to_string(cinema->GetPrice())};
     }
     std::cout << table;
 }
@@ -89,7 +96,8 @@ void CSV_Parser::AddCinema()
     lastID = cinemaList.size() + 1;
     cout << "Для добавления фильма в прокат, пожайлуйста, введите название фильма и ФИО режисера: " << endl;
 
-    string title, director;
+    string title, genre;
+    unsigned int price, year;
     cout << "Введите название фильма: ";
     try
     {
@@ -103,14 +111,35 @@ void CSV_Parser::AddCinema()
     cout << "Введите ФИО режисера: ";
     try
     {
-        getline(cin, director);
+        getline(cin, genre);
     }
     catch (const std::exception &e)
     {
         std::cerr << e.what() << '\n';
     }
 
-    Cinema *cinemaItem = new Cinema(lastID, title, director);
+    cout << "Введите год выпуска фильма: ";
+    try
+    {
+        cin >> year;
+    }
+    catch (const std::exception &e)
+    {
+        std::cout << e.what() << '\n';
+    }
+
+    cout << "Введите цену фильма: ";
+    try
+    {
+        cin >> price;
+    }
+    catch (const std::exception &e)
+    {
+        std::cout << e.what() << '\n';
+    }
+
+
+    Cinema *cinemaItem = new Cinema(lastID, title, genre, price, year);
     cinemaList.push_back(cinemaItem);
     SaveToFile();
 
@@ -132,7 +161,6 @@ void CSV_Parser::AddCinema()
     else
     {
         std::cout << "Неверный ввод!" << std::endl;
-        Sleep(100);
     }
 }
 void CSV_Parser::DeleteCinema()

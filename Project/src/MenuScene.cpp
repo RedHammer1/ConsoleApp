@@ -36,7 +36,6 @@ void MenuScene::Update()
           catch (const std::invalid_argument &)
           {
                std::cout << "Неверный ввод!" << std::endl;
-               Sleep(100);
                continue;
           }
           if (choice > 0 && choice <= (int)scenes.size())

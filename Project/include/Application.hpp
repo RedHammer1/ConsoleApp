@@ -29,7 +29,7 @@ private:
     void CheckAccout();
 
     std::string password = "admin";
-    std::string login = "login";
+    std::string login = "admin";
 
     bool isProtected;
     bool isAccessGranted = false;
