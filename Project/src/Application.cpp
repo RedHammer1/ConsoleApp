@@ -61,7 +61,7 @@ Application::Application()
     SetConsoleCP(866);
     SetConsoleOutputCP(866);
 
-    parser = new CSV_Parser("assets/cinema.csv");
+    parser = new CSV_Parser<Cinema>("assets/cinema.csv");
 
     menuScene = new MenuScene("MainScene", []()
                               { PrintNameOfProgram(); });
@@ -83,23 +83,23 @@ void Application::ShowCinemaList()
 }
 void Application::AddCinema()
 {
-    parser->AddCinema();
+    parser->AddElement();
 }
 
 void Application::SortById(bool reverse)
 {
-    parser->SortById(reverse);
+   // parser->SortById(reverse);
     parser->SaveToFile();
 }
 void Application::SortByTitle(bool reverse)
 {
-    parser->SortByTitle(reverse);
+   // parser->SortByTitle(reverse);
     parser->SaveToFile();
 }
 
 void Application::DeleteCinema()
 {
-    parser->DeleteCinema();
+    parser->DeleteElement();
 }
 
 void Application::CheckAccout()

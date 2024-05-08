@@ -15,7 +15,7 @@ private:
     MenuScene *adminScene;
     MenuScene *sortScene;
     HANDLE console;
-    CSV_Parser *parser;
+    CSV_Parser<Cinema> *parser;
 
     void AddAllScenesElements();
     void ShowCinemaList();

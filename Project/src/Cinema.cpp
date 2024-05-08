@@ -1,13 +1,13 @@
 #include "../include/Cinema.hpp"
 
-unsigned int Cinema::GetId()
+std::string Cinema::GetAgeRating()
 {
-    return id;
+    return ageRating;
 }
 
-void Cinema::SetId(unsigned int id)
+void Cinema::SetAgeRating(std::string ageRating)
 {
-    this->id = id;
+    this->ageRating = ageRating;
 }
 
 std::string Cinema::GetTitle()
