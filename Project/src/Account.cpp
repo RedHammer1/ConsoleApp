@@ -84,6 +84,29 @@ void CSV_Parser<Account>::ReadFromFile()
     _ReadFromFile(table);
 }
 
+bool AccountContainer::Authenticate(std::string login, std::string password)
+{
+    for (auto *acc : elementList)
+    {
+        if (acc->GetLogin() == login && acc->GetPassword() == password)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+bool AccountContainer::CheckLogin(std::string login)
+{
+    for (auto *acc : elementList)
+    {
+        if (acc->GetLogin() == login)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 // template <>
 // void CSV_Parser<Account>::DeleteElement()
 // {

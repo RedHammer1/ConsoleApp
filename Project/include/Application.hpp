@@ -1,6 +1,7 @@
 
 #include "MenuScene.hpp"
 #include "Cinema.hpp"
+#include "Account.hpp"
 
 #include <vector>
 
@@ -13,9 +14,12 @@ public:
 private:
     MenuScene *menuScene;
     MenuScene *adminScene;
+    MenuScene *userScene;
     MenuScene *sortScene;
     HANDLE console;
-    CSV_Parser<Cinema> *parser;
+
+    CinemaContainer *parser;
+    AccountContainer *accCont;
 
     void AddAllScenesElements();
     void ShowCinemaList();
@@ -27,9 +31,9 @@ private:
     void SortByTitle(bool reverse);
 
     void CheckAccout();
+    void Registration();
 
-    std::string password = "admin";
-    std::string login = "admin";
+
 
     bool isProtected;
     bool isAccessGranted = false;

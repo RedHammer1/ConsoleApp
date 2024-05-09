@@ -44,17 +44,10 @@ public:
             elementList.push_back(new Account(0, "admin", "admin", true));
         }
     }
+    
     Account *GetAccountForAuth(std::string login, std::string password);
-    bool Authenticate(std::string login, std::string password)
-    {
-        for (auto *acc : elementList)
-        {
-            if (acc->GetLogin() == login && acc->GetPassword() == password)
-            {
-                return true;
-            }
-        }
-    }
+    bool CheckLogin(std::string login);
+    bool Authenticate(std::string login, std::string password);
 };
 
 #endif

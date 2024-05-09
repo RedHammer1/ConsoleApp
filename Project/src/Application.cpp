@@ -25,15 +25,15 @@ enum Colors
 void PrintNameOfProgram()
 {
     std::cout << R"(
-+-------------------------------------------------------------------------------+
-| db   dD db    db db   db  .d88b.  d888888b d88888b  .d8b.  d888888b d8888b.	| 
-| 88 ,8P' 88    88 88   88 .8P  Y8. `~~88~~' 88'     d8' `8b `~~88~~' 88  `8D	| 
-| 88,8P   88    88 88ooo88 88    88    88    88ooooo 88ooo88    88    88oodD'	| 
-| 88`8b   88    88 88~~~88 88    88    88    88~~~~~ 88~~~88    88    88~~~	| 
-| 88 `88. 88b  d88 88   88 `8b  d8'    88    88.     88   88    88    88	| 
-| YP   YD ~Y8888P' YP   YP  `Y88P'     YP    Y88888P YP   YP    YP    88	| 
-+-------------------------------------------------------------------------------+)"
-              << '\n';
+ +-------------------------------------------------------------------------------+
+ | db   dD db    db db   db  .d88b.  d888888b d88888b  .d8b.  d888888b d8888b.	 | 
+ | 88 ,8P' 88    88 88   88 .8P  Y8. `~~88~~' 88'     d8' `8b `~~88~~' 88  `8D	 | 
+ | 88,8P   88    88 88ooo88 88    88    88    88ooooo 88ooo88    88    88oodD'	 | 
+ | 88`8b   88    88 88~~~88 88    88    88    88~~~~~ 88~~~88    88    88~~~	 | 
+ | 88 `88. 88b  d88 88   88 `8b  d8'    88    88.     88   88    88    88	 | 
+ | YP   YD ~Y8888P' YP   YP  `Y88P'     YP    Y88888P YP   YP    YP    88	 | 
+ +-------------------------------------------------------------------------------+)"
+              << std::endl;
 }
 
 Application::Application()
@@ -61,17 +61,21 @@ Application::Application()
     SetConsoleCP(866);
     SetConsoleOutputCP(866);
 
-    parser = new CSV_Parser<Cinema>("assets/cinema.csv");
+    parser = new CinemaContainer("assets/cinema.csv");
+    accCont = new AccountContainer("assets/accounts.csv");
 
     menuScene = new MenuScene("MainScene", []()
                               { PrintNameOfProgram(); });
     adminScene = new MenuScene("AdminScene", []()
                                { PrintNameOfProgram(); });
+    userScene = new MenuScene("UserScene", []()
+                              { PrintNameOfProgram(); });
     sortScene = new MenuScene("SortScene", [this]()
                               { this->ShowCinemaList(); });
 
     SceneManager::LoadScene("MainScene", menuScene);
     SceneManager::LoadScene("AdminScene", adminScene);
+    SceneManager::LoadScene("UserScene", userScene);
     SceneManager::LoadScene("SortScene", sortScene);
 }
 
@@ -104,7 +108,7 @@ void Application::DeleteCinema()
 void Application::CheckAccout()
 {
     system("cls");
-    std::cout << "Введите логин пароль для того, чтобы получить доступ администратора: " << std::endl;
+    std::cout << "Введите логин и пароль для того, чтобы получить доступ администратора: " << std::endl;
     std::string pass, passLogin;
 
     std::cout << "Введите логин: " << std::endl;
@@ -115,9 +119,9 @@ void Application::CheckAccout()
     std::cout << ">>> ";
     cin >> pass;
 
-    if (passLogin != login && pass != password)
+    if (!accCont->Authenticate(passLogin, pass))
     {
-        cout << "Такого пользователя не существует, выйдите или зарегестрируйстесь!!" << endl;
+        cout << "Такого пользователя не существует!!!" << endl;
         Sleep(300);
         CheckAccout();
     }
@@ -126,10 +130,44 @@ void Application::CheckAccout()
         isAccessGranted = true;
     }
 }
+
+void Application::Registration()
+{
+    system("cls");
+    std::cout << "Регистрация: " << std::endl;
+    std::string pass, passLogin;
+
+    std::cout << "Введите логин: " << std::endl;
+    std::cout << ">>> ";
+    cin >> passLogin;
+
+    std::cout << "Введите пароль: " << std::endl;
+    std::cout << ">>> ";
+    cin >> pass;
+
+    if (!accCont->CheckLogin(passLogin))
+    {
+        accCont->AddElement(new Account(accCont->GetSize(), passLogin, pass, false));
+        isAccessGranted = true;
+    }
+    else
+    {
+        std::cout << "Аккаунт с таким логином и паролем уже есть, пожалуйста, введите ещё раз данные" << std::endl;
+        Sleep(500);
+        Registration();
+    }
+}
+
 void Application::AddAllScenesElements()
 {
     menuScene->AddScene(
-        new MenuElem("Администрационное меню", [this]()
+        new MenuElem("Регистрация", [this]()
+                     { 
+                        if(!isAccessGranted) this->Registration();
+                        if(isAccessGranted) SceneManager::ChangeScene("AdminScene"); }));
+
+    menuScene->AddScene(
+        new MenuElem("Авторизация", [this]()
                      { 
                         if(!isAccessGranted) this->CheckAccout();
                         if(isAccessGranted) SceneManager::ChangeScene("AdminScene"); }));

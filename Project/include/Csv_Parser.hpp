@@ -24,11 +24,10 @@ public:
     void AddElement(T *t);
     void DeleteElement(unsigned int id);
     T *GetElementById(unsigned int id);
+    unsigned int GetSize();
 
     // void AddElement();
     // void DeleteElement();
-
-    ~CSV_Parser();
 
 protected:
     std::vector<T *> elementList;
@@ -44,7 +43,12 @@ template <typename T>
 CSV_Parser<T>::CSV_Parser(std::string filename)
 {
     this->filename = filename;
-    ReadData();
+    // ReadData();
+}
+template <typename T>
+unsigned int CSV_Parser<T>::GetSize()
+{
+    return elementList.size();
 }
 
 template <typename T>
