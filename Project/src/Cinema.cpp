@@ -29,22 +29,30 @@ void Cinema::Print(ConsoleTable &table)
 }
 void Cinema::ReadFromCSV(stringstream &file)
 {
-    string id, title, genre, ageRating, price, year;
-    getline(file, id, ';');
-    getline(file, title, ';');
-    getline(file, genre, ';');
-    getline(file, ageRating, ';');
-    getline(file, year, ';');
-    getline(file, price);
+    
+    string _id, _title, _genre, _ageRating, _price, _year;
+    getline(file, _id, ';');
+    getline(file, _title, ';');
+    getline(file, _genre, ';');
+    getline(file, _ageRating, ';');
+    getline(file, _year, ';');
+    getline(file, _price);
 
-    this->SetId(stoi(id));
-    this->SetTitle(title);
-    this->SetGenre(genre);
-    this->SetAgeRating(ageRating);
+    this->SetId(stoi(_id));
+    this->SetTitle(_title);
+    this->SetGenre(_genre);
+    this->SetAgeRating(_ageRating);
 
-    this->SetPrice(stoi(price));
-    this->SetYear(stoi(year));
+    this->SetPrice(stoi(_price));
+    this->SetYear(stoi(_year));
 }
-void Cinema::WriteToCSV(std::ofstream &file)
+
+void Cinema::WriteToCSV(ofstream &file)
 {
+    file << GetId() << ";"
+         << GetTitle() << ";"
+         << GetGenre() << ";"
+         << GetAgeRating() << ";"
+         << GetYear() << ";"
+         << GetPrice() << endl;
 }

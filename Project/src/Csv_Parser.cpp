@@ -1,5 +1,4 @@
-#ifndef PASRSER_HPP
-#define PASRSER_HPP
+
 
 #include "../include/Csv_Parser.hpp"
 #include <iostream>
@@ -16,25 +15,6 @@ using namespace std;
 
 
 template <>
-void CSV_Parser<Cinema>::ReadFile()
-{
-    ifstream file(this->filename);
-
-    string line;
-    while (getline(file, line))
-    {
-        stringstream ss(line);
-        Cinema *cinema;
-       // cinema->ReadFromCSV(ss);
-       
-
-        elementList.push_back(cinema);
-    }
-
-    file.close();
-}
-
-template <>
 void CSV_Parser<Cinema>::SaveToFile()
 {
     try
@@ -48,13 +28,7 @@ void CSV_Parser<Cinema>::SaveToFile()
         {
             Cinema *cinema = elementList[i];
             cinema->Print(table);
-
-            file << cinema->GetId() << ";"
-                 << cinema->GetTitle() << ";"
-                 << cinema->GetGenre() << ";"
-                 << cinema->GetAgeRating() << ";"
-                 << cinema->GetYear() << ";"
-                 << cinema->GetPrice() << std::endl;
+            cinema->WriteToCSV(file);
         }
         std::cout << table;
 
@@ -71,7 +45,7 @@ void CSV_Parser<Cinema>::ReadFromFile()
 {
     elementList.clear();
 
-    ReadFile();
+    ReadData();
     ConsoleTable table{"ID", "”ˆ‹œŒ", "†€", "‚‡€‘’‰ …‰’ˆƒ", "ƒ„ ‚›“‘Š€", "–…€"};
     table.setPadding(5);
 
@@ -79,10 +53,8 @@ void CSV_Parser<Cinema>::ReadFromFile()
     {
         Cinema *cinema = elementList[i];
         cinema->Print(table);
-        
     }
     std::cout << table;
-
 }
 template <>
 void CSV_Parser<Cinema>::AddElement()
@@ -220,4 +192,3 @@ void CSV_Parser<Cinema>::DeleteElement()
     }
 }
 
-#endif

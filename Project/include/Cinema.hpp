@@ -11,7 +11,7 @@ public:
         : Base(id), title(title), genre(genre),
           price(price), year(year), ageRating(ageRating) {}
 
-    Cinema() : Base(0) {}
+    Cinema() {}
 
     std::string GetTitle();
     void SetTitle(std::string title);
@@ -29,14 +29,16 @@ public:
     void SetYear(unsigned int year);
 
     void Print(ConsoleTable &table) override;
-    void ReadFromCSV(std::stringstream &file);
+    void ReadFromCSV(std::stringstream &file) override;
     void WriteToCSV(std::ofstream &file) override;
 
 private:
     std::string title;
     std::string genre;
     std::string ageRating;
-    unsigned int price;
-    unsigned int year;
+    unsigned int price = 0;
+    unsigned int year = 0;
 };
+
+
 #endif

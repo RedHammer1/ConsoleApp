@@ -2,6 +2,9 @@
 #define BASE_HPP
 
 #include <iostream>
+#include <sstream>
+#include <fstream>
+#include <ostream>
 #include <string>
 #include "../include/TextTable.hpp"
 
@@ -16,7 +19,7 @@ public:
     inline void SetId(unsigned int id);
 
     virtual void Print(ConsoleTable &table) = 0;
-
+    virtual void ReadFromCSV(std::stringstream &file) = 0;
     virtual void WriteToCSV(std::ofstream &file) = 0;
 
 private:

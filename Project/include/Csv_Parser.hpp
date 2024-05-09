@@ -1,3 +1,6 @@
+#ifndef PASRSER_HPP
+#define PASRSER_HPP
+
 #include "Cinema.hpp"
 #include "Account.hpp"
 
@@ -5,8 +8,7 @@ class Cinema;
 class Account;
 
 #include <vector>
-
-
+#include <fstream>
 
 template <typename T>
 class CSV_Parser
@@ -27,12 +29,30 @@ private:
     std::string filename;
     int lastID = 0;
 
-    void ReadFile();
+    void ReadData();
 };
 
 template <typename T>
 CSV_Parser<T>::CSV_Parser(std::string filename)
 {
     this->filename = filename;
-    ReadFile();
+    ReadData();
 }
+
+template <typename T>
+void CSV_Parser<T>::ReadData()
+{
+    std::ifstream file(filename);
+
+    std::string line;
+    while (std::getline(file, line))
+    {
+        std::stringstream ss(line);
+
+        T *t = new T();
+        t->ReadFromCSV(ss);
+    }
+    file.close();
+}
+
+#endif
