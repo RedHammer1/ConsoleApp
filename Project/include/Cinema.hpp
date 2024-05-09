@@ -2,6 +2,9 @@
 #define CINEMA_HPP
 
 #include "Base.hpp"
+#include "Csv_Parser.hpp"
+
+class Cinema;
 
 class Cinema : public Base
 {
@@ -40,5 +43,10 @@ private:
     unsigned int year = 0;
 };
 
+class CinemaContainer : public CSV_Parser<Cinema>
+{
+public:
+    CinemaContainer(std::string filename) : CSV_Parser<Cinema>(filename){}
+};
 
 #endif

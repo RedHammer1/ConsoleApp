@@ -2,7 +2,9 @@
 #define ACCOUNT_HPP
 
 #include "Base.hpp"
+#include "Csv_Parser.hpp"
 
+class Account;
 class Account : public Base
 {
 public:
@@ -10,6 +12,8 @@ public:
             std::string password, bool isAdmin)
         : Base(id), login(login),
           password(password), isAdmin(isAdmin) {}
+
+    Account() {}
 
     std::string GetLogin();
     void SetLogin(std::string login);
@@ -20,9 +24,37 @@ public:
     bool GetIsAdmin();
     void SetIsAdmin(bool isAdmin);
 
+    void Print(ConsoleTable &table) override;
+    void ReadFromCSV(std::stringstream &file) override;
+    void WriteToCSV(std::ofstream &file) override;
+
 private:
     std::string login;
     std::string password;
-    bool isAdmin;
+    bool isAdmin = false;
 };
+
+class AccountContainer : public CSV_Parser<Account>
+{
+public:
+    AccountContainer(std::string filename) : CSV_Parser<Account>(filename)
+    {
+        if (elementList.size() == 0)
+        {
+            elementList.push_back(new Account(0, "admin", "admin", true));
+        }
+    }
+    Account *GetAccountForAuth(std::string login, std::string password);
+    bool Authenticate(std::string login, std::string password)
+    {
+        for (auto *acc : elementList)
+        {
+            if (acc->GetLogin() == login && acc->GetPassword() == password)
+            {
+                return true;
+            }
+        }
+    }
+};
+
 #endif

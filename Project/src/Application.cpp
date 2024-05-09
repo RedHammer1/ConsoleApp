@@ -77,29 +77,28 @@ Application::Application()
 
 void Application::ShowCinemaList()
 {
-    
+
     parser->ReadFromFile();
-    
 }
 void Application::AddCinema()
 {
-    parser->AddElement();
+    // parser->AddElement();
 }
 
 void Application::SortById(bool reverse)
 {
-   // parser->SortById(reverse);
+    // parser->SortById(reverse);
     parser->SaveToFile();
 }
 void Application::SortByTitle(bool reverse)
 {
-   // parser->SortByTitle(reverse);
+    // parser->SortByTitle(reverse);
     parser->SaveToFile();
 }
 
 void Application::DeleteCinema()
 {
-    parser->DeleteElement();
+    // parser->DeleteElement();
 }
 
 void Application::CheckAccout()
@@ -126,7 +125,6 @@ void Application::CheckAccout()
     {
         isAccessGranted = true;
     }
-    
 }
 void Application::AddAllScenesElements()
 {
