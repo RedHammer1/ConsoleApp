@@ -1,3 +1,6 @@
+#ifndef PASRSER_HPP
+#define PASRSER_HPP
+
 #include "../include/Csv_Parser.hpp"
 #include <iostream>
 #include <sstream>
@@ -21,19 +24,11 @@ void CSV_Parser<Cinema>::ReadFile()
     while (getline(file, line))
     {
         stringstream ss(line);
-        string id, title, genre, ageRating, price, year;
-        getline(ss, id, ';');
-        getline(ss, title, ';');
-        getline(ss, genre, ';');
-        getline(ss, ageRating, ';');
-        getline(ss, year, ';');
-        getline(ss, price);
-        int _id = stoi(id);
+        Cinema *cinema;
+       // cinema->ReadFromCSV(ss);
+       
 
-        int _price = stoi(price);
-        int _year = stoi(year);
-
-        elementList.push_back(new Cinema(_id, title, genre, ageRating, _year, _price));
+        elementList.push_back(cinema);
     }
 
     file.close();
@@ -52,8 +47,7 @@ void CSV_Parser<Cinema>::SaveToFile()
         for (int i = 0; i < elementList.size(); i++)
         {
             Cinema *cinema = elementList[i];
-            table += {std::to_string(cinema->GetId()), cinema->GetTitle(), cinema->GetGenre(), cinema->GetAgeRating(),
-             std::to_string(cinema->GetYear()), std::to_string(cinema->GetPrice())};
+            cinema->Print(table);
 
             file << cinema->GetId() << ";"
                  << cinema->GetTitle() << ";"
@@ -84,9 +78,8 @@ void CSV_Parser<Cinema>::ReadFromFile()
     for (int i = 0; i < elementList.size(); i++)
     {
         Cinema *cinema = elementList[i];
-
-        table += {std::to_string(cinema->GetId()), cinema->GetTitle(), cinema->GetGenre(), cinema->GetAgeRating(),
-             std::to_string(cinema->GetYear()), std::to_string(cinema->GetPrice())};
+        cinema->Print(table);
+        
     }
     std::cout << table;
 
@@ -226,3 +219,5 @@ void CSV_Parser<Cinema>::DeleteElement()
         }
     }
 }
+
+#endif

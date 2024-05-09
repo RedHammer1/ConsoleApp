@@ -1,7 +1,8 @@
-#include <iostream>
-#include <string>
+#ifndef ACCOUNT_HPP
+#define ACCOUNT_HPP
 
-class Base;
+#include "Base.hpp"
+
 class Account : public Base
 {
 public:
@@ -24,3 +25,4 @@ private:
     std::string password;
     bool isAdmin;
 };
+#endif

@@ -1,51 +1,50 @@
 #include "../include/Cinema.hpp"
 
-std::string Cinema::GetAgeRating()
-{
-    return ageRating;
-}
+using namespace std;
 
-void Cinema::SetAgeRating(std::string ageRating)
-{
-    this->ageRating = ageRating;
-}
+string Cinema::GetAgeRating() { return ageRating; }
 
-std::string Cinema::GetTitle()
-{
-    return title;
-}
+void Cinema::SetAgeRating(string ageRating) { this->ageRating = ageRating; }
 
-void Cinema::SetTitle(std::string title)
-{
-    this->title = title;
-}
+string Cinema::GetTitle() { return title; }
 
-std::string Cinema::GetGenre()
-{
-    return genre;
-}
+void Cinema::SetTitle(string title) { this->title = title; }
 
-void Cinema::SetGenre(std::string genre)
-{
-    this->genre = genre;
-}
+string Cinema::GetGenre() { return genre; }
 
-unsigned int Cinema::GetPrice()
-{
-    return price;
-}
+void Cinema::SetGenre(string genre) { this->genre = genre; }
 
-void Cinema::SetPrice(unsigned int price)
-{
-    this->price = price;
-}
+unsigned int Cinema::GetPrice() { return price; }
 
-unsigned int Cinema::GetYear()
-{
-    return year;
-}
+void Cinema::SetPrice(unsigned int price) { this->price = price; }
 
-void Cinema::SetYear(unsigned int year)
+unsigned int Cinema::GetYear() { return year; }
+
+void Cinema::SetYear(unsigned int year) { this->year = year; }
+
+void Cinema::Print(ConsoleTable &table)
 {
-    this->year = year;
+    table += {std::to_string(GetId()), GetTitle(), GetGenre(), GetAgeRating(),
+              std::to_string(GetYear()), std::to_string(GetPrice())};
+}
+void Cinema::ReadFromCSV(stringstream &file)
+{
+    string id, title, genre, ageRating, price, year;
+    getline(file, id, ';');
+    getline(file, title, ';');
+    getline(file, genre, ';');
+    getline(file, ageRating, ';');
+    getline(file, year, ';');
+    getline(file, price);
+
+    this->SetId(stoi(id));
+    this->SetTitle(title);
+    this->SetGenre(genre);
+    this->SetAgeRating(ageRating);
+
+    this->SetPrice(stoi(price));
+    this->SetYear(stoi(year));
+}
+void Cinema::WriteToCSV(std::ofstream &file)
+{
 }

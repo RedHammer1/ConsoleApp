@@ -1,8 +1,12 @@
+#ifndef CONSOLE_TABLE_HPP
+#define CONSOLE_TABLE_HPP
+
 #include <string>
 #include <vector>
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+class ConsoleTable;
 
 class ConsoleTable {
 public:
@@ -72,3 +76,4 @@ private:
 
 std::string operator*(const std::string &other, int repeats);
 
+#endif

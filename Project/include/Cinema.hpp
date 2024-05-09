@@ -1,6 +1,8 @@
+#ifndef CINEMA_HPP
+#define CINEMA_HPP
+
 #include "Base.hpp"
 
-class Base;
 class Cinema : public Base
 {
 public:
@@ -8,6 +10,8 @@ public:
            std::string genre, std::string ageRating, unsigned int price, unsigned int year)
         : Base(id), title(title), genre(genre),
           price(price), year(year), ageRating(ageRating) {}
+
+    Cinema() : Base(0) {}
 
     std::string GetTitle();
     void SetTitle(std::string title);
@@ -24,6 +28,10 @@ public:
     unsigned int GetYear();
     void SetYear(unsigned int year);
 
+    void Print(ConsoleTable &table) override;
+    void ReadFromCSV(std::stringstream &file);
+    void WriteToCSV(std::ofstream &file) override;
+
 private:
     std::string title;
     std::string genre;
@@ -31,3 +39,4 @@ private:
     unsigned int price;
     unsigned int year;
 };
+#endif
