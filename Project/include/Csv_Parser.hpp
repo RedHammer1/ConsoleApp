@@ -43,7 +43,7 @@ template <typename T>
 CSV_Parser<T>::CSV_Parser(std::string filename)
 {
     this->filename = filename;
-    // ReadData();
+     ReadData();
 }
 template <typename T>
 unsigned int CSV_Parser<T>::GetSize()

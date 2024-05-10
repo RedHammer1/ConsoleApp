@@ -37,8 +37,9 @@ private:
 class AccountContainer : public CSV_Parser<Account>
 {
 public:
-    AccountContainer(std::string filename) : CSV_Parser<Account>(filename)
+    AccountContainer(std::string filename) : CSV_Parser(filename)
     {
+        
         if (elementList.size() == 0)
         {
             elementList.push_back(new Account(0, "admin", "admin", true));

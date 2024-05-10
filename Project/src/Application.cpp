@@ -152,7 +152,7 @@ void Application::Registration()
     }
     else
     {
-        std::cout << "Аккаунт с таким логином и паролем уже есть, пожалуйста, введите ещё раз данные" << std::endl;
+        std::cout << "Этот аккаунт уже существует, пожалуйста, введите ещё раз логин и пароль!!!" << std::endl;
         Sleep(500);
         Registration();
     }
@@ -165,19 +165,20 @@ void Application::AddAllScenesElements()
                      { 
                         if(!isAccessGranted) this->Registration();
                         if(isAccessGranted) SceneManager::ChangeScene("AdminScene"); }));
-
     menuScene->AddScene(
         new MenuElem("Авторизация", [this]()
                      { 
                         if(!isAccessGranted) this->CheckAccout();
                         if(isAccessGranted) SceneManager::ChangeScene("AdminScene"); }));
-    menuScene->AddScene(
-        new MenuElem("Показать список фильмов", [this]()
-                     { SceneManager::ChangeScene("SortScene"); }));
+
     menuScene->AddScene(
         new MenuElem("Выход из программы", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
+
+    adminScene->AddScene(
+        new MenuElem("Показать список фильмов", [this]()
+                     { SceneManager::ChangeScene("SortScene"); }));
 
     sortScene->AddScene(
         new MenuElem("По id", [this]()
