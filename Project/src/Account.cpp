@@ -107,14 +107,97 @@ bool AccountContainer::CheckLogin(std::string login)
     return false;
 }
 
-// template <>
-// void CSV_Parser<Account>::DeleteElement()
-// {
+bool AccountContainer::CheckIsAdmin()
+{
+    for (auto *acc : elementList)
+    {
+        if (acc->GetIsAdmin())
+        {
+            return true;
+        }
+    }
+    return false;
+}
 
-// }
+void AccountContainer::SaveToFile()
+{
+    try
+    {
+        ConsoleTable table{"ID", "ЛОГИН", "ПАРОЛЬ", "ПРАВА ДОСТУПА"};
+        _SaveToFile(table);
+    }
+    catch (std::exception &ex)
+    {
+        std::cerr << ex.what() << std::endl;
+        Sleep(100);
+    }
+}
 
-// template <>
-// void CSV_Parser<Account>::AddElement()
-// {
+void AccountContainer::ReadFromFile()
+{
+    ConsoleTable table{"ID", "ЛОГИН", "ПАРОЛЬ", "ПРАВА ДОСТУПА"};
+    _ReadFromFile(table);
+}
 
-// }
+void AccountContainer::AddFunc()
+{
+    system("cls");
+    lastID = elementList.size() + 1;
+    cout << "Пожалуйста, добавьте новый аккаунт!!" << endl;
+
+    string login, password, isAdmin;
+    bool _isAdmin;
+    cout << "Введите логин пользователя: " << std::endl;
+    cout << "<<<" << std::endl;
+    try
+    {
+        getline(cin, login);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+
+    cout << "Введите пароль: " << std::endl;
+    cout << "<<<" << std::endl;
+    try
+    {
+        getline(cin, password);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+
+    cout << "Введите права доступа: " << std::endl;
+    cout << "<<<" << std::endl;
+    try
+    {
+        getline(cin, isAdmin);
+        _isAdmin = stob(isAdmin);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+
+    Account *el = new Account(lastID, login,
+                              password, _isAdmin);
+    AddElement(el);
+
+    ContinueFunc([this]()
+        { AddFunc(); });
+}
+
+void CinemaContainer::ChangeFunc()
+{
+    int id = _ChangeFunc();
+    if (id == -1)
+    {
+        return;
+    }
+
+    cout << "Введите какие данные вы бы хотели изменить: " << endl;
+    cout << ">>> ";
+    // elementList[id]
+}

@@ -26,7 +26,4 @@ public:
     static void LoadScene(std::string name, Scene *s);
     static void ChangeScene(std::string name);
     static void Clear();
-
-private:
-    void Loop();
 };

@@ -7,6 +7,7 @@
 #include <sstream>
 #include <fstream>
 #include <windows.h>
+#include <functional>
 
 #include <algorithm>
 #include <array>
@@ -18,16 +19,19 @@ class CSV_Parser
 public:
     CSV_Parser(std::string filename);
 
-    void SaveToFile();
-    void ReadFromFile();
+    virtual void SaveToFile() = 0;
+    virtual void ReadFromFile() = 0;
 
     void AddElement(T *t);
     void DeleteElement(unsigned int id);
     T *GetElementById(unsigned int id);
+    void SortById(bool reverse);
+
     unsigned int GetSize();
 
-    // void AddElement();
-    // void DeleteElement();
+    virtual void AddFunc();
+    virtual void ChangeFunc() = 0;
+    void DeleteFunc();
 
 protected:
     std::vector<T *> elementList;
@@ -37,20 +41,22 @@ protected:
     void ReadData();
     void _SaveToFile(ConsoleTable &table);
     void _ReadFromFile(ConsoleTable &table);
+    int _ChangeFunc();
+
+    void ContinueFunc(std::function<void()> action);
 };
 
 template <typename T>
 CSV_Parser<T>::CSV_Parser(std::string filename)
 {
     this->filename = filename;
-     ReadData();
+    ReadData();
 }
 template <typename T>
 unsigned int CSV_Parser<T>::GetSize()
 {
     return elementList.size();
 }
-
 template <typename T>
 void CSV_Parser<T>::ReadData()
 {
@@ -67,7 +73,6 @@ void CSV_Parser<T>::ReadData()
     }
     file.close();
 }
-
 template <typename T>
 void CSV_Parser<T>::_SaveToFile(ConsoleTable &table)
 {
@@ -105,6 +110,12 @@ template <typename T>
 void CSV_Parser<T>::AddElement(T *t)
 {
     elementList.push_back(t);
+    SaveToFile();
+}
+template <typename T>
+T *CSV_Parser<T>::GetElementById(unsigned int id)
+{
+    return elementList[id];
 }
 
 template <typename T>
@@ -122,6 +133,95 @@ void CSV_Parser<T>::DeleteElement(unsigned int id)
     {
         elementList[i]->SetId(i + 1);
     }
+}
+
+template <typename T>
+void CSV_Parser<T>::DeleteFunc()
+{
+    system("cls");
+    this->ReadFromFile();
+
+    int id;
+    std::cout << "Введить номер для последующего удаления элемента из списка: " << std::endl;
+    std::cout << ">>> ";
+    std::cin >> id;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    if (elementList.size() < id || id <= 0)
+    {
+        std::cout << "В списке нет элемента номером" << id << std::endl;
+        return;
+    }
+
+    auto it = std::find(elementList.begin(), elementList.end(), elementList[id - 1]);
+    if (it != elementList.end())
+        elementList.erase(it);
+    for (int i = 0; i < elementList.size(); i++)
+    {
+        elementList[i]->SetId(i + 1);
+    }
+
+    SaveToFile();
+
+    if (elementList.size() > 0)
+    {
+        ContinueFunc([this]()
+                     { DeleteFunc(); });
+    }
+}
+template <typename T>
+void CSV_Parser<T>::ContinueFunc(std::function<void()> action)
+{
+    std::string variant;
+
+    std::cout << "Если вы хотите продолжить ввод, то введите д или y(лат) - иначе н или n(лат)!!!" << std::endl;
+    std::cin >> variant;
+
+    std::cin.ignore(100, '\n');
+
+    if (variant == "д" || variant == "y")
+    {
+        action();
+    }
+    else if (variant == "н?" || variant == "n")
+    {
+        Sleep(100);
+    }
+    else
+    {
+        std::cout << "Вы ввели неверно функцию, возращаем на предыдущую сцену!" << std::endl;
+        Sleep(100);
+    }
+}
+
+template <typename T>
+int CSV_Parser<T>::_ChangeFunc()
+{
+    int id = 0;
+    system("cls");
+    cout << "Введите в каком элементе списка вы хотите изменить данные: " << endl;
+    cout << ">>> ";
+    cin >> id;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    if (elementList.size() < id || id <= 0)
+    {
+        cout << "В списке нет элемента номером" << id << endl;
+        return -1;
+    }
+
+    return id;
+}
+
+template <typename T>
+void CSV_Parser<T>::SortById(bool reverse)
+{
+    sort(
+        elementList.begin(), elementList.end(),
+        reverse ? [](T *a, T *b)
+            { return a->GetId() > b->GetId(); }
+                : [](T *a, T *b)
+            { return a->GetId() < b->GetId(); });
 }
 
 bool stob(std::string s);

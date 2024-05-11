@@ -16,8 +16,6 @@ void SceneManager::Clear()
         delete iter.second;
 }
 
-void SceneManager::Loop()
-{
-}
+
 
 std::map<std::string, Scene *> SceneManager::Scenes;

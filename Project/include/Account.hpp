@@ -37,18 +37,24 @@ private:
 class AccountContainer : public CSV_Parser<Account>
 {
 public:
-    AccountContainer(std::string filename) : CSV_Parser(filename)
+    AccountContainer(std::string filename) : CSV_Parser<Account>(filename)
     {
-        
+
         if (elementList.size() == 0)
         {
             elementList.push_back(new Account(0, "admin", "admin", true));
         }
     }
-    
+
     Account *GetAccountForAuth(std::string login, std::string password);
     bool CheckLogin(std::string login);
     bool Authenticate(std::string login, std::string password);
+    bool CheckIsAdmin();
+
+    void AddFunc() override;
+    void ChangeFunc() override;
+    void SaveToFile() override;
+    void ReadFromFile() override;
 };
 
 #endif

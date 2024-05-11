@@ -15,6 +15,7 @@ private:
     MenuScene *menuScene;
     MenuScene *adminScene;
     MenuScene *userScene;
+    MenuScene *accScene;
     MenuScene *sortScene;
     HANDLE console;
 
@@ -22,19 +23,10 @@ private:
     AccountContainer *accCont;
 
     void AddAllScenesElements();
-    void ShowCinemaList();
-
-    void AddCinema();
-    void DeleteCinema();
-
-    void SortById(bool reverse);
-    void SortByTitle(bool reverse);
 
     void CheckAccout();
     void Registration();
 
-
-
-    bool isProtected;
+    bool isAdmin = false;
     bool isAccessGranted = false;
 };

@@ -71,38 +71,14 @@ Application::Application()
     userScene = new MenuScene("UserScene", []()
                               { PrintNameOfProgram(); });
     sortScene = new MenuScene("SortScene", [this]()
-                              { this->ShowCinemaList(); });
+                              { parser->ReadFromFile(); });
 
     SceneManager::LoadScene("MainScene", menuScene);
     SceneManager::LoadScene("AdminScene", adminScene);
     SceneManager::LoadScene("UserScene", userScene);
     SceneManager::LoadScene("SortScene", sortScene);
-}
 
-void Application::ShowCinemaList()
-{
-
-    parser->ReadFromFile();
-}
-void Application::AddCinema()
-{
-    // parser->AddElement();
-}
-
-void Application::SortById(bool reverse)
-{
-    // parser->SortById(reverse);
-    parser->SaveToFile();
-}
-void Application::SortByTitle(bool reverse)
-{
-    // parser->SortByTitle(reverse);
-    parser->SaveToFile();
-}
-
-void Application::DeleteCinema()
-{
-    // parser->DeleteElement();
+    // SceneManager::LoadScene("AccountsScene", accScene);
 }
 
 void Application::CheckAccout()
@@ -175,23 +151,20 @@ void Application::AddAllScenesElements()
         new MenuElem("Выход из программы", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
-
     adminScene->AddScene(
         new MenuElem("Показать список фильмов", [this]()
                      { SceneManager::ChangeScene("SortScene"); }));
 
     sortScene->AddScene(
         new MenuElem("По id", [this]()
-                     { this->SortById(false); }));
+                     { 
+                            // parser->SortById(false);
+    parser->SaveToFile(); }));
     sortScene->AddScene(
-        new MenuElem("По названию фильма", [this]()
-                     { this->SortByTitle(false); }));
-    sortScene->AddScene(
-        new MenuElem("По id инвертированно", [this]()
-                     { this->SortById(true); }));
-    sortScene->AddScene(
-        new MenuElem("По названию фильма инвертированно", [this]()
-                     { this->SortByTitle(true); }));
+        new MenuElem("По названию фильма", [this]() { // parser->SortByTitle(false);
+            parser->SaveToFile();
+        }));
+
     sortScene->AddScene(
         new MenuElem("Выход из программы", []()
                      { std::cout << "Please stand by.... " << std::endl;
@@ -199,15 +172,28 @@ void Application::AddAllScenesElements()
 
     adminScene->AddScene(
         new MenuElem("Добавить фильм в прокат", [this]()
-                     { this->AddCinema(); }));
+                     { parser->AddFunc(); }));
     adminScene->AddScene(
         new MenuElem("Удалить фильм из проката", [this]()
-                     { this->DeleteCinema(); }));
+                     { parser->DeleteFunc(); }));
+    adminScene->AddScene(
+        new MenuElem("Найти фильм в прокате", [this]() {}));
 
     adminScene->AddScene(
         new MenuElem("Выход из программы", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
+
+    // accScene->AddScene(
+    //     new MenuElem("Добавить аккаунт в базу данных", [this]() {}));
+    // accScene->AddScene(
+    //     new MenuElem("Удалить аккаунт из базы данных", [this]() {}));
+    // accScene->AddScene(
+    //     new MenuElem("Добавить администрационные права для аккаунта", [this]() {}));
+    // accScene->AddScene(
+    //     new MenuElem("Выход из программы", []()
+    //                  { std::cout << "Please stand by.... " << std::endl;
+    //                      exit(EXIT_SUCCESS); }));
 }
 void Application::Update()
 {

@@ -57,8 +57,7 @@ void Cinema::WriteToCSV(ofstream &file)
          << GetPrice() << endl;
 }
 
-template <>
-void CSV_Parser<Cinema>::SaveToFile()
+void CinemaContainer::SaveToFile()
 {
     try
     {
@@ -71,147 +70,132 @@ void CSV_Parser<Cinema>::SaveToFile()
         Sleep(100);
     }
 }
-template <>
-void CSV_Parser<Cinema>::ReadFromFile()
+
+void CinemaContainer::ReadFromFile()
 {
     ConsoleTable table{"ID", "ФИЛЬМ", "ЖАНР", "ВОЗРАСТНОЙ РЕЙТИНГ", "ГОД ВЫПУСКА", "ЦЕНА"};
     _ReadFromFile(table);
 }
 
-/*
-template <>
-void CSV_Parser<Cinema>::AddElement()
+void CinemaContainer::AddFunc()
 {
     system("cls");
     lastID = elementList.size() + 1;
-    std::cout << "Для добавления фильма в прокат, пожайлуйста, заполните данные о киноленте: " << std::endl;
+    cout << "Пожалуйста, добавьте новую киноленту!!" << endl;
 
-    std::string title, genre, ageRating;
-    unsigned int price, year;
-    std::cout << "Введите название фильма: ";
+    string title, genre, ageRating, price, year;
+    int _price, _year;
+    cout << "Введите название фильма: " << std::endl;
+    cout << "<<<" << std::endl;
     try
     {
-        std::getline(std::cin, title);
+        getline(cin, title);
     }
     catch (const std::exception &e)
     {
         std::cerr << e.what() << '\n';
     }
 
-    std::cout << "Введите жанр фильма: ";
+    cout << "Введите жанр фильма: " << std::endl;
+    cout << "<<<" << std::endl;
     try
     {
-        std::getline(std::cin, genre);
+        getline(cin, genre);
     }
     catch (const std::exception &e)
     {
         std::cerr << e.what() << '\n';
     }
 
-    std::cout << "Введите возрастной рейтинг: ";
+    cout << "Введите возрастной рейтинг фильма: " << std::endl;
+    cout << "<<<" << std::endl;
     try
     {
-        std::getline(std::cin, ageRating);
+        getline(cin, ageRating);
     }
     catch (const std::exception &e)
     {
         std::cerr << e.what() << '\n';
     }
 
-    std::cout << "Введите год выпуска фильма: ";
+    cout << "Введите ценник для фильма: " << std::endl;
+    cout << "<<<" << std::endl;
     try
     {
-        std::cin >> year;
+        getline(cin, price);
+        _price = stoi(price);
     }
     catch (const std::exception &e)
     {
-        std::cout << e.what() << '\n';
+        std::cerr << e.what() << '\n';
     }
 
-    std::cout << "Введите цену фильма: ";
+    cout << "Введите, то когда был создан фильм: " << std::endl;
+    cout << "<<<" << std::endl;
     try
     {
-        std::cin >> price;
+        getline(cin, year);
+        _year = stoi(year);
     }
     catch (const std::exception &e)
     {
-        std::cout << e.what() << '\n';
+        std::cerr << e.what() << '\n';
     }
 
-    Cinema *cinemaItem = new Cinema(lastID, title, genre, ageRating, price, year);
-    elementList.push_back(cinemaItem);
-    SaveToFile();
+    Cinema *cinemaItem = new Cinema(lastID, title,
+                                    genre, ageRating, _price, _year);
 
-    std::string variant;
+    AddElement(cinemaItem);
 
-    std::cout << "Хотите ли вы добавить ещё один фильм? (д или y(лат) - да, н или n - нет)" << std::endl;
-    std::cin >> variant;
-
-    std::cin.ignore(100, '\n');
-
-    if (variant == "д" || variant == "y")
-    {
-        AddElement();
-    }
-    else if (variant == "н" || variant == "n")
-    {
-        Sleep(100);
-    }
-    else
-    {
-        std::cout << "Неверный ввод!" << std::endl;
-    }
+    ContinueFunc(
+        [this]()
+        { AddFunc(); });
 }
-template <>
-void CSV_Parser<Cinema>::DeleteElement()
+
+void CinemaContainer::ChangeFunc()
 {
-    system("cls");
-    this->ReadFromFile();
-
-    int id;
-    std::cout << "Введить номер фильма для последующего удаления: " << std::endl;
-    std::cout << ">>> ";
-    std::cin >> id;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-    if (elementList.size() < id || id <= 0)
+    int id = _ChangeFunc();
+    if (id == -1)
     {
-        std::cout << "В списке нет фильма номером" << id << std::endl;
         return;
     }
 
-    auto it = std::find(elementList.begin(), elementList.end(), elementList[id - 1]);
-    if (it != elementList.end())
-        elementList.erase(it);
-    for (int i = 0; i < elementList.size(); i++)
+    int cid = 0;
+    cout << "Введите какие данные вы бы хотели изменить (счёт идёт с наиминования фильма (от 0 до 4)): " << endl;
+    cout << ">>> ";
+    cin >> cid;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    if (cid >= 0 && cid <= 4)
     {
-        elementList[i]->SetId(i + 1);
+
+        // switch (cid)
+        // {
+        // case 0:
+        // {
+        //     string title;
+        //     cout << "Введите название фильма: " << std::endl;
+        //     cout << "<<<" << std::endl;
+        //     try
+        //     {
+        //         getline(cin, title);
+        //     }
+        //     catch (const std::exception &e)
+        //     {
+        //         std::cerr << e.what() << '\n';
+        //     }
+
+        //     elementList[id]
+        //         ->SetTitle()
+        // }
+        // break;
+
+        // default:
+        //     break;
+        // }
     }
 
-    SaveToFile();
+    return;
 
-    if (elementList.size() > 0)
-    {
-        std::string variant;
-
-        std::cout << "Хотите ли вы удалить ещё один фильм? (д или y(лат) - да, н или n - нет)" << std::endl;
-        std::cin >> variant;
-
-        std::cin.ignore(100, '\n');
-
-        if (variant == "д" || variant == "y")
-        {
-            DeleteElement();
-        }
-        else if (variant == "н" || variant == "n")
-        {
-            Sleep(100);
-        }
-        else
-        {
-            std::cout << "Неверный ввод!" << std::endl;
-            Sleep(100);
-        }
-    }
+    //
 }
-*/
