@@ -80,76 +80,47 @@ void CinemaContainer::ReadFromFile()
 void CinemaContainer::AddFunc()
 {
     system("cls");
+    bool error = false;
     lastID = elementList.size() + 1;
     cout << "Пожалуйста, добавьте новую киноленту!!" << endl;
 
-    string title, genre, ageRating, price, year;
-    int _price, _year;
+    string title, genre, ageRating;
+    int price, year;
+
     cout << "Введите название фильма: " << std::endl;
-    cout << "<<<" << std::endl;
-    try
-    {
-        getline(cin, title);
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << '\n';
-    }
+    title = Controller::GetFRCL_str(error);
 
-    cout << "Введите жанр фильма: " << std::endl;
-    cout << "<<<" << std::endl;
-    try
+    if (!error)
     {
-        getline(cin, genre);
+        cout << "Введите жанр фильма: " << std::endl;
+        genre = Controller::GetFRCL_str(error);
     }
-    catch (const std::exception &e)
+    if (!error)
     {
-        std::cerr << e.what() << '\n';
+        cout << "Введите возрастной рейтинг фильма: " << std::endl;
+        ageRating = Controller::GetFRCL_str(error);
     }
+    if (!error)
+    {
+        cout << "Введите ценник для фильма: " << std::endl;
+        price = Controller::GetFRCL_int(error);
+    }
+    if (!error)
+    {
+        cout << "Введите, то когда был создан фильм: " << std::endl;
+        year = Controller::GetFRCL_int(error);
+    }
+    if (!error)
+    {
+        Cinema *cinemaItem = new Cinema(lastID, title,
+                                        genre, ageRating, price, year);
 
-    cout << "Введите возрастной рейтинг фильма: " << std::endl;
-    cout << "<<<" << std::endl;
-    try
-    {
-        getline(cin, ageRating);
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << '\n';
-    }
+        AddElement(cinemaItem);
 
-    cout << "Введите ценник для фильма: " << std::endl;
-    cout << "<<<" << std::endl;
-    try
-    {
-        getline(cin, price);
-        _price = stoi(price);
+        ContinueFunc(
+            [this]()
+            { AddFunc(); });
     }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-
-    cout << "Введите, то когда был создан фильм: " << std::endl;
-    cout << "<<<" << std::endl;
-    try
-    {
-        getline(cin, year);
-        _year = stoi(year);
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-
-    Cinema *cinemaItem = new Cinema(lastID, title,
-                                    genre, ageRating, _price, _year);
-
-    AddElement(cinemaItem);
-
-    ContinueFunc(
-        [this]()
-        { AddFunc(); });
 }
 
 void CinemaContainer::ChangeFunc()
@@ -159,43 +130,40 @@ void CinemaContainer::ChangeFunc()
     {
         return;
     }
-
     int cid = 0;
-    cout << "Введите какие данные вы бы хотели изменить (счёт идёт с наиминования фильма (от 0 до 4)): " << endl;
+    cout << "Введите какие данные вы бы хотели изменить (счёт идёт с наименования фильма (от 0 до 4)): " << endl;
     cout << ">>> ";
     cin >> cid;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    bool error = false;
 
     if (cid >= 0 && cid <= 4)
     {
-
-        // switch (cid)
-        // {
-        // case 0:
-        // {
-        //     string title;
-        //     cout << "Введите название фильма: " << std::endl;
-        //     cout << "<<<" << std::endl;
-        //     try
-        //     {
-        //         getline(cin, title);
-        //     }
-        //     catch (const std::exception &e)
-        //     {
-        //         std::cerr << e.what() << '\n';
-        //     }
-
-        //     elementList[id]
-        //         ->SetTitle()
-        // }
-        // break;
-
-        // default:
-        //     break;
-        // }
+        switch (cid)
+        {
+        case 0:
+            elementList[id]->SetTitle(Controller::GetFRCL_str(error));
+            break;
+        case 1:
+            elementList[id]->SetGenre(Controller::GetFRCL_str(error));
+            break;
+        case 2:
+            elementList[id]->SetAgeRating(Controller::GetFRCL_str(error));
+            break;
+        case 3:
+            elementList[id]->SetYear(Controller::GetFRCL_int(error));
+            break;
+        case 4:
+            elementList[id]->SetPrice(Controller::GetFRCL_int(error));
+            break;
+        default:
+            break;
+        }
+        SaveToFile();
+        ContinueFunc(
+            [this]()
+            { ChangeFunc(); });
     }
 
     return;
-
-    //
 }

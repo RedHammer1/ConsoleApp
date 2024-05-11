@@ -13,6 +13,8 @@
 #include <array>
 #include "../include/TextTable.hpp"
 
+#include "../include/Controller.hpp"
+
 template <typename T>
 class CSV_Parser
 {
@@ -29,7 +31,7 @@ public:
 
     unsigned int GetSize();
 
-    virtual void AddFunc();
+    virtual void AddFunc() = 0;
     virtual void ChangeFunc() = 0;
     void DeleteFunc();
 
@@ -199,14 +201,15 @@ int CSV_Parser<T>::_ChangeFunc()
 {
     int id = 0;
     system("cls");
-    cout << "Введите в каком элементе списка вы хотите изменить данные: " << endl;
-    cout << ">>> ";
-    cin >> id;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    ReadFromFile();
+    std::cout << "Введите в каком элементе списка вы хотите изменить данные: " << std::endl;
+    std::cout << ">>> ";
+    std::cin >> id;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     if (elementList.size() < id || id <= 0)
     {
-        cout << "В списке нет элемента номером" << id << endl;
+        std::cout << "В списке нет элемента номером" << id << std::endl;
         return -1;
     }
 
@@ -224,6 +227,6 @@ void CSV_Parser<T>::SortById(bool reverse)
             { return a->GetId() < b->GetId(); });
 }
 
-bool stob(std::string s);
+
 
 #endif

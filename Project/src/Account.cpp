@@ -19,27 +19,6 @@ void Account::Print(ConsoleTable &table)
               GetPassword(), std::to_string(GetIsAdmin())};
 }
 
-bool stob(std::string s)
-{
-    auto result = false;
-
-    std::istringstream is(s);
-    is >> result;
-
-    if (is.fail())
-    {
-        is.clear();
-        is >> std::boolalpha >> result;
-    }
-
-    if (is.fail())
-    {
-        throw std::invalid_argument(s.append(" is not convertable to bool"));
-    }
-
-    return result;
-}
-
 void Account::ReadFromCSV(stringstream &file)
 {
 
@@ -141,63 +120,75 @@ void AccountContainer::ReadFromFile()
 
 void AccountContainer::AddFunc()
 {
+    bool error = false;
     system("cls");
     lastID = elementList.size() + 1;
     cout << "Пожалуйста, добавьте новый аккаунт!!" << endl;
 
-    string login, password, isAdmin;
-    bool _isAdmin;
-    cout << "Введите логин пользователя: " << std::endl;
-    cout << "<<<" << std::endl;
-    try
+    string login, password;
+    bool isAdmin;
+
+    cout << "Введите логин: " << std::endl;
+    login = Controller::GetFRCL_str(error);
+
+    if (!error)
     {
-        getline(cin, login);
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << '\n';
+        cout << "Введите пароль: " << std::endl;
+        password = Controller::GetFRCL_str(error);
     }
 
-    cout << "Введите пароль: " << std::endl;
-    cout << "<<<" << std::endl;
-    try
+    if (!error)
     {
-        getline(cin, password);
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << '\n';
+        cout << "Введите права доступа: " << std::endl;
+        isAdmin = Controller::GetFRCL_bool(error);
     }
 
-    cout << "Введите права доступа: " << std::endl;
-    cout << "<<<" << std::endl;
-    try
+    if (!error)
     {
-        getline(cin, isAdmin);
-        _isAdmin = stob(isAdmin);
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << '\n';
-    }
+        Account *el = new Account(lastID, login,
+                                  password, isAdmin);
+        AddElement(el);
 
-    Account *el = new Account(lastID, login,
-                              password, _isAdmin);
-    AddElement(el);
-
-    ContinueFunc([this]()
-        { AddFunc(); });
+        ContinueFunc([this]()
+                     { AddFunc(); });
+    }
 }
 
-void CinemaContainer::ChangeFunc()
+void AccountContainer::ChangeFunc()
 {
+    bool error = false;
     int id = _ChangeFunc();
     if (id == -1)
     {
         return;
     }
-
-    cout << "Введите какие данные вы бы хотели изменить: " << endl;
+    int cid = 0;
+    cout << "Введите какие данные вы бы хотели изменить (счёт идёт с логина (от 0 до 2)): " << endl;
     cout << ">>> ";
-    // elementList[id]
+    cin >> cid;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    if (cid >= 0 && cid <= 4)
+    {
+        switch (cid)
+        {
+        case 0:
+            elementList[id]->SetLogin(Controller::GetFRCL_str(error));
+            break;
+        case 1:
+            elementList[id]->SetPassword(Controller::GetFRCL_str(error));
+            break;
+        case 2:
+            elementList[id]->SetIsAdmin(Controller::GetFRCL_bool(error));
+            break;
+        default:
+            break;
+        }
+        SaveToFile();
+        ContinueFunc(
+            [this]()
+            { ChangeFunc(); });
+    }
+
+    return;
 }

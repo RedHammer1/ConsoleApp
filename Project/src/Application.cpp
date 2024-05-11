@@ -177,7 +177,7 @@ void Application::AddAllScenesElements()
         new MenuElem("Удалить фильм из проката", [this]()
                      { parser->DeleteFunc(); }));
     adminScene->AddScene(
-        new MenuElem("Найти фильм в прокате", [this]() {}));
+        new MenuElem("Изменить фильм в прокате", [this]() {parser->ChangeFunc();}));
 
     adminScene->AddScene(
         new MenuElem("Выход из программы", []()
