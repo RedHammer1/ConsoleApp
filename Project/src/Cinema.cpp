@@ -14,9 +14,9 @@ string Cinema::GetGenre() { return genre; }
 
 void Cinema::SetGenre(string genre) { this->genre = genre; }
 
-unsigned int Cinema::GetPrice() { return price; }
+float Cinema::GetPrice() { return price; }
 
-void Cinema::SetPrice(unsigned int price) { this->price = price; }
+void Cinema::SetPrice(float price) { this->price = price; }
 
 unsigned int Cinema::GetYear() { return year; }
 
@@ -81,7 +81,7 @@ void CinemaContainer::AddFunc()
 {
     system("cls");
     bool error = false;
-    lastID = elementList.size() + 1;
+    lastID = elementList.size();
     cout << "Пожалуйста, добавьте новую киноленту!!" << endl;
 
     string title, genre, ageRating;
@@ -103,7 +103,7 @@ void CinemaContainer::AddFunc()
     if (!error)
     {
         cout << "Введите ценник для фильма: " << std::endl;
-        price = Controller::GetFRCL_int(error);
+        price = Controller::GetFRCL_float(error);
     }
     if (!error)
     {
@@ -120,6 +120,7 @@ void CinemaContainer::AddFunc()
         ContinueFunc(
             [this]()
             { AddFunc(); });
+            SaveToFile();
     }
 }
 
@@ -154,7 +155,7 @@ void CinemaContainer::ChangeFunc()
             elementList[id]->SetYear(Controller::GetFRCL_int(error));
             break;
         case 4:
-            elementList[id]->SetPrice(Controller::GetFRCL_int(error));
+            elementList[id]->SetPrice(Controller::GetFRCL_float(error));
             break;
         default:
             break;
@@ -163,7 +164,37 @@ void CinemaContainer::ChangeFunc()
         ContinueFunc(
             [this]()
             { ChangeFunc(); });
+            SaveToFile();
     }
 
     return;
+}
+
+void CinemaContainer::SortByTitle(bool reverse)
+{
+    sort(
+        elementList.begin(), elementList.end(),
+        reverse ? [](Cinema *a, Cinema *b)
+            { return a->GetTitle() < b->GetTitle(); }
+                : [](Cinema *a, Cinema *b)
+            { return a->GetTitle() > b->GetTitle(); });
+}
+
+void CinemaContainer::SortPrice(bool reverse)
+{
+    sort(
+        elementList.begin(), elementList.end(),
+        reverse ? [](Cinema *a, Cinema *b)
+            { return a->GetPrice() < b->GetPrice(); }
+                : [](Cinema *a, Cinema *b)
+            { return a->GetPrice() > b->GetPrice(); });
+}
+void CinemaContainer::SortYear(bool reverse)
+{
+    sort(
+        elementList.begin(), elementList.end(),
+        reverse ? [](Cinema *a, Cinema *b)
+            { return a->GetYear() < b->GetYear(); }
+                : [](Cinema *a, Cinema *b)
+            { return a->GetYear() > b->GetYear(); });
 }

@@ -11,7 +11,7 @@ class Cinema : public Base
 {
 public:
     Cinema(unsigned int id, std::string title,
-           std::string genre, std::string ageRating, unsigned int price, unsigned int year)
+           std::string genre, std::string ageRating, float price, unsigned int year)
         : Base(id), title(title), genre(genre),
           price(price), year(year), ageRating(ageRating) {}
 
@@ -26,8 +26,8 @@ public:
     std::string GetAgeRating();
     void SetAgeRating(std::string ageRating);
 
-    unsigned int GetPrice();
-    void SetPrice(unsigned int price);
+    float GetPrice();
+    void SetPrice(float price);
 
     unsigned int GetYear();
     void SetYear(unsigned int year);
@@ -35,12 +35,13 @@ public:
     void Print(ConsoleTable &table) override;
     void ReadFromCSV(std::stringstream &file) override;
     void WriteToCSV(std::ofstream &file) override;
+    
 
 private:
     std::string title;
     std::string genre;
     std::string ageRating;
-    unsigned int price = 0;
+    float price = 0;
     unsigned int year = 0;
 };
 
@@ -53,58 +54,13 @@ public:
 
     void SaveToFile() override;
     void ReadFromFile() override;
+
+    void SortByTitle(bool reverse);
+    void SortPrice(bool reverse);
+    void SortYear(bool reverse);
+
+   
 };
 
-/*void CinemaContainer::DeleteCinema()
-{
-    system("cls");
-    this->ReadFromFile();
-
-    int id;
-    cout << "???ý??? ????? ?????ÿ ý?? ?????ý?????? ?ýÿ?????: " << endl;
-    std::cout << ">>> ";
-    cin >> id;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-    if (cinemaList.size() < id || id <= 0)
-    {
-        std::cout << "? ?????? ??? ?????ÿ ???????" << id << std::endl;
-        return;
-    }
-
-    auto it = std::find(cinemaList.begin(), cinemaList.end(), cinemaList[id - 1]);
-    if (it != cinemaList.end())
-        cinemaList.erase(it);
-    for (int i = 0; i < cinemaList.size(); i++)
-    {
-        cinemaList[i]->SetId(i + 1);
-    }
-
-    SaveToFile();
-
-    if (cinemaList.size() > 0)
-    {
-        std::string variant;
-
-        std::cout << "?????? ?? ?? ?ýÿ???? ??? ?ý?? ?????? (ý ??? y(?ÿ?) - ýÿ, ? ??? n - ???)" << std::endl;
-        std::cin >> variant;
-
-        std::cin.ignore(100, '\n');
-
-        if (variant == "ý" || variant == "y")
-        {
-            DeleteCinema();
-        }
-        else if (variant == "?" || variant == "n")
-        {
-            Sleep(100);
-        }
-        else
-        {
-            std::cout << "???????? ???ý!" << std::endl;
-            Sleep(100);
-        }
-    }
-}*/
 
 #endif

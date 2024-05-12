@@ -6,7 +6,6 @@ void MenuScene::Destroy()
 }
 void MenuScene::Update()
 {
-     
      while ((true))
      {
           system("cls");

@@ -59,6 +59,26 @@ int Controller::GetFRCL_int(bool &error)
     return i;
 }
 
+float Controller::GetFRCL_float(bool &error)
+{
+    float i;
+    std::string str;
+    std::cout << ">>> ";
+    try
+    {
+        
+        getline(cin, str);
+        i = stof(str);
+        error = false;
+    }
+    catch (const std::exception &e)
+    {
+        error = true;
+        std::cerr << e.what() << '\n';
+    }
+    return i;
+}
+
 bool Controller::GetFRCL_bool(bool &error)
 {
     bool i;

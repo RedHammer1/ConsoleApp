@@ -73,12 +73,15 @@ Application::Application()
     sortScene = new MenuScene("SortScene", [this]()
                               { parser->ReadFromFile(); });
 
+    accScene = new MenuScene("AccountsScene", [this]()
+                             { accCont->ReadFromFile(); });
+
     SceneManager::LoadScene("MainScene", menuScene);
     SceneManager::LoadScene("AdminScene", adminScene);
     SceneManager::LoadScene("UserScene", userScene);
     SceneManager::LoadScene("SortScene", sortScene);
 
-    // SceneManager::LoadScene("AccountsScene", accScene);
+    SceneManager::LoadScene("AccountsScene", accScene);
 }
 
 void Application::CheckAccout()
@@ -95,7 +98,7 @@ void Application::CheckAccout()
     std::cout << ">>> ";
     cin >> pass;
 
-    if (!accCont->Authenticate(passLogin, pass))
+    if (!accCont->Authenticate(passLogin, pass, isAdmin))
     {
         cout << "Такого пользователя не существует!!!" << endl;
         Sleep(300);
@@ -140,31 +143,38 @@ void Application::AddAllScenesElements()
         new MenuElem("Регистрация", [this]()
                      { 
                         if(!isAccessGranted) this->Registration();
-                        if(isAccessGranted) SceneManager::ChangeScene("AdminScene"); }));
+                        if(isAccessGranted) SceneManager::ChangeScene("UserScene"); isAccessGranted = false; }));
     menuScene->AddScene(
         new MenuElem("Авторизация", [this]()
                      { 
                         if(!isAccessGranted) this->CheckAccout();
-                        if(isAccessGranted) SceneManager::ChangeScene("AdminScene"); }));
+                        if(isAccessGranted) {
+                            if(isAdmin)
+                            { SceneManager::ChangeScene("AdminScene"); isAccessGranted = false;}
+                            else
+                            {SceneManager::ChangeScene("UserScene"); isAccessGranted = false;}
+                            } }));
 
     menuScene->AddScene(
         new MenuElem("Выход из программы", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
-    adminScene->AddScene(
-        new MenuElem("Показать список фильмов", [this]()
-                     { SceneManager::ChangeScene("SortScene"); }));
 
     sortScene->AddScene(
         new MenuElem("По id", [this]()
-                     { 
-                            // parser->SortById(false);
-    parser->SaveToFile(); }));
+                     { parser->SortById(true); parser->SaveToFile(); }));
     sortScene->AddScene(
-        new MenuElem("По названию фильма", [this]() { // parser->SortByTitle(false);
-            parser->SaveToFile();
-        }));
-
+        new MenuElem("По названию фильма", [this]()
+                     {  parser->SortByTitle(false);
+            parser->SaveToFile(); }));
+    sortScene->AddScene(
+        new MenuElem("По названию цене киноленте", [this]()
+                     {  parser->SortPrice(false);
+            parser->SaveToFile(); }));
+    sortScene->AddScene(
+        new MenuElem("По дате выхода", [this]()
+                     {  parser->SortYear(false);
+            parser->SaveToFile(); }));
     sortScene->AddScene(
         new MenuElem("Выход из программы", []()
                      { std::cout << "Please stand by.... " << std::endl;
@@ -177,23 +187,38 @@ void Application::AddAllScenesElements()
         new MenuElem("Удалить фильм из проката", [this]()
                      { parser->DeleteFunc(); }));
     adminScene->AddScene(
-        new MenuElem("Изменить фильм в прокате", [this]() {parser->ChangeFunc();}));
+        new MenuElem("Изменить фильм в прокате", [this]()
+                     { parser->ChangeFunc(); }));
+    adminScene->AddScene(
+        new MenuElem("Показать аккаунты пользователей", [this]()
+                     { SceneManager::ChangeScene("AccountsScene"); }));
 
     adminScene->AddScene(
         new MenuElem("Выход из программы", []()
                      { std::cout << "Please stand by.... " << std::endl;
                          exit(EXIT_SUCCESS); }));
 
-    // accScene->AddScene(
-    //     new MenuElem("Добавить аккаунт в базу данных", [this]() {}));
-    // accScene->AddScene(
-    //     new MenuElem("Удалить аккаунт из базы данных", [this]() {}));
-    // accScene->AddScene(
-    //     new MenuElem("Добавить администрационные права для аккаунта", [this]() {}));
-    // accScene->AddScene(
-    //     new MenuElem("Выход из программы", []()
-    //                  { std::cout << "Please stand by.... " << std::endl;
-    //                      exit(EXIT_SUCCESS); }));
+    userScene->AddScene(
+        new MenuElem("Показать список фильмов", [this]()
+                     { SceneManager::ChangeScene("SortScene"); }));
+    userScene->AddScene(
+        new MenuElem("Выход из программы", []()
+                     { std::cout << "Please stand by.... " << std::endl;
+                         exit(EXIT_SUCCESS); }));
+
+    accScene->AddScene(
+        new MenuElem("Добавить аккаунт в базу данных", [this]()
+                     { accCont->AddFunc(); }));
+    accScene->AddScene(
+        new MenuElem("Удалить аккаунт из базы данных", [this]()
+                     { accCont->DeleteFunc(); }));
+    accScene->AddScene(
+        new MenuElem("Изменить данные аккаунта", [this]()
+                     { accCont->ChangeFunc(); }));
+    accScene->AddScene(
+        new MenuElem("Выход из программы", []()
+                     { std::cout << "Please stand by.... " << std::endl;
+                         exit(EXIT_SUCCESS); }));
 }
 void Application::Update()
 {

@@ -4,7 +4,11 @@
 #include "Base.hpp"
 #include "Csv_Parser.hpp"
 
+
+
 class Account;
+
+
 class Account : public Base
 {
 public:
@@ -48,13 +52,15 @@ public:
 
     Account *GetAccountForAuth(std::string login, std::string password);
     bool CheckLogin(std::string login);
-    bool Authenticate(std::string login, std::string password);
+    bool Authenticate(std::string login, std::string password, bool &isAdmin);
     bool CheckIsAdmin();
 
     void AddFunc() override;
     void ChangeFunc() override;
     void SaveToFile() override;
     void ReadFromFile() override;
+
+    
 };
 
 #endif

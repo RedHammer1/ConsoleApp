@@ -42,12 +42,11 @@ void Account::WriteToCSV(ofstream &file)
          << GetIsAdmin() << endl;
 }
 
-template <>
-void CSV_Parser<Account>::SaveToFile()
+void AccountContainer::SaveToFile()
 {
     try
     {
-        ConsoleTable table{"ID", "‹ƒ", "€‹", "€‚€ €„‘’€’€"};
+        ConsoleTable table{"ID", "‹ƒ", "€‹", "€‚€ „‘’“€"};
         _SaveToFile(table);
     }
     catch (std::exception &ex)
@@ -56,19 +55,20 @@ void CSV_Parser<Account>::SaveToFile()
         Sleep(100);
     }
 }
-template <>
-void CSV_Parser<Account>::ReadFromFile()
+
+void AccountContainer::ReadFromFile()
 {
-    ConsoleTable table{"ID", "‹ƒ", "€‹", "€‚€ €„‘’€’€"};
+    ConsoleTable table{"ID", "‹ƒ", "€‹", "€‚€ „‘’“€"};
     _ReadFromFile(table);
 }
 
-bool AccountContainer::Authenticate(std::string login, std::string password)
+bool AccountContainer::Authenticate(std::string login, std::string password, bool &isAdmin)
 {
     for (auto *acc : elementList)
     {
         if (acc->GetLogin() == login && acc->GetPassword() == password)
         {
+            isAdmin = acc->GetIsAdmin();
             return true;
         }
     }
@@ -98,31 +98,11 @@ bool AccountContainer::CheckIsAdmin()
     return false;
 }
 
-void AccountContainer::SaveToFile()
-{
-    try
-    {
-        ConsoleTable table{"ID", "‹ƒ", "€‹", "€‚€ „‘’“€"};
-        _SaveToFile(table);
-    }
-    catch (std::exception &ex)
-    {
-        std::cerr << ex.what() << std::endl;
-        Sleep(100);
-    }
-}
-
-void AccountContainer::ReadFromFile()
-{
-    ConsoleTable table{"ID", "‹ƒ", "€‹", "€‚€ „‘’“€"};
-    _ReadFromFile(table);
-}
-
 void AccountContainer::AddFunc()
 {
     bool error = false;
     system("cls");
-    lastID = elementList.size() + 1;
+    lastID = elementList.size();
     cout << "®¦ «γ©αβ , ¤®΅ Άμβ¥ ­®Άλ©  ªª γ­β!!" << endl;
 
     string login, password;
@@ -151,6 +131,7 @@ void AccountContainer::AddFunc()
 
         ContinueFunc([this]()
                      { AddFunc(); });
+        SaveToFile();
     }
 }
 
@@ -188,6 +169,7 @@ void AccountContainer::ChangeFunc()
         ContinueFunc(
             [this]()
             { ChangeFunc(); });
+        SaveToFile();
     }
 
     return;

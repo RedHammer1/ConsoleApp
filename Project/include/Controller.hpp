@@ -12,6 +12,7 @@ class Controller
 public:
     static std::string GetFRCL_str(bool& error);
     static int GetFRCL_int(bool& error);
+    static float GetFRCL_float(bool &error);
     static bool GetFRCL_bool(bool& error);
 };
 

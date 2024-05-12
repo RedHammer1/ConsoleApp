@@ -12,7 +12,6 @@
 #include <algorithm>
 #include <array>
 #include "../include/TextTable.hpp"
-
 #include "../include/Controller.hpp"
 
 template <typename T>
@@ -35,12 +34,31 @@ public:
     virtual void ChangeFunc() = 0;
     void DeleteFunc();
 
+    int GetFRCL_int()
+    {
+        int i;
+        std::string str;
+        std::cout << ">>> ";
+        try
+        {
+
+            getline(std::cin, str);
+            i = stoi(str);
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+        return i;
+    }
+
+    void ReadData();
+
 protected:
     std::vector<T *> elementList;
     std::string filename;
     int lastID = 0;
 
-    void ReadData();
     void _SaveToFile(ConsoleTable &table);
     void _ReadFromFile(ConsoleTable &table);
     int _ChangeFunc();
@@ -133,7 +151,7 @@ void CSV_Parser<T>::DeleteElement(unsigned int id)
         elementList.erase(it);
     for (int i = 0; i < elementList.size(); i++)
     {
-        elementList[i]->SetId(i + 1);
+        elementList[i]->SetId(i);
     }
 }
 
@@ -143,11 +161,9 @@ void CSV_Parser<T>::DeleteFunc()
     system("cls");
     this->ReadFromFile();
 
-    int id;
     std::cout << "Введить номер для последующего удаления элемента из списка: " << std::endl;
-    std::cout << ">>> ";
-    std::cin >> id;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    int id = GetFRCL_int();
 
     if (elementList.size() < id || id <= 0)
     {
@@ -155,12 +171,12 @@ void CSV_Parser<T>::DeleteFunc()
         return;
     }
 
-    auto it = std::find(elementList.begin(), elementList.end(), elementList[id - 1]);
+    auto it = std::find(elementList.begin(), elementList.end(), elementList[id]);
     if (it != elementList.end())
         elementList.erase(it);
     for (int i = 0; i < elementList.size(); i++)
     {
-        elementList[i]->SetId(i + 1);
+        elementList[i]->SetId(i);
     }
 
     SaveToFile();
@@ -222,11 +238,9 @@ void CSV_Parser<T>::SortById(bool reverse)
     sort(
         elementList.begin(), elementList.end(),
         reverse ? [](T *a, T *b)
-            { return a->GetId() > b->GetId(); }
+            { return a->GetId() < b->GetId(); }
                 : [](T *a, T *b)
-            { return a->GetId() < b->GetId(); });
+            { return a->GetId() > b->GetId(); });
 }
-
-
 
 #endif
