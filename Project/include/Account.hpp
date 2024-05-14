@@ -49,18 +49,13 @@ public:
             elementList.push_back(new Account(0, "admin", "admin", true));
         }
     }
-
     Account *GetAccountForAuth(std::string login, std::string password);
     bool CheckLogin(std::string login);
     bool Authenticate(std::string login, std::string password, bool &isAdmin);
-    bool CheckIsAdmin();
-
     void AddFunc() override;
     void ChangeFunc() override;
     void SaveToFile() override;
     void ReadFromFile() override;
-
-    
 };
 
 #endif

@@ -1,4 +1,3 @@
-
 #include "MenuElem.hpp"
 #include <vector>
 class Scene;

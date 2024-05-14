@@ -24,9 +24,7 @@ void MenuScene::Update()
 
           std::cin.ignore(100, '\n');
           if (variant == "q")
-          {
-               break;
-          }
+          {break;}
           int choice = 0;
           try
           {
@@ -38,9 +36,7 @@ void MenuScene::Update()
                continue;
           }
           if (choice > 0 && choice <= (int)scenes.size())
-          {
-               scenes[choice - 1]->Update();
-          }
+          {scenes[choice - 1]->Update();}
           else
           {
                std::cout << "Неверный ввод!" << std::endl;

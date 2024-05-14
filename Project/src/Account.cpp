@@ -85,44 +85,26 @@ bool AccountContainer::CheckLogin(std::string login)
     }
     return false;
 }
-
-bool AccountContainer::CheckIsAdmin()
-{
-    for (auto *acc : elementList)
-    {
-        if (acc->GetIsAdmin())
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
 void AccountContainer::AddFunc()
 {
     bool error = false;
     system("cls");
     lastID = elementList.size();
     cout << "Пожалуйста, добавьте новый аккаунт!!" << endl;
-
     string login, password;
     bool isAdmin;
-
     cout << "Введите логин: " << std::endl;
     login = Controller::GetFRCL_str(error);
-
     if (!error)
     {
         cout << "Введите пароль: " << std::endl;
         password = Controller::GetFRCL_str(error);
     }
-
     if (!error)
     {
         cout << "Введите права доступа: " << std::endl;
         isAdmin = Controller::GetFRCL_bool(error);
     }
-
     if (!error)
     {
         Account *el = new Account(lastID, login,
@@ -134,7 +116,6 @@ void AccountContainer::AddFunc()
         SaveToFile();
     }
 }
-
 void AccountContainer::ChangeFunc()
 {
     bool error = false;
@@ -171,6 +152,5 @@ void AccountContainer::ChangeFunc()
             { ChangeFunc(); });
         SaveToFile();
     }
-
     return;
 }
